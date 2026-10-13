@@ -1,56 +1,679 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>刘子涵 | 个人主页</title>
-<style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:"Microsoft YaHei",sans-serif; background:#0f172a; color:#e2e8f0; }
-  .hero {
-    min-height:55vh; display:flex; flex-direction:column;
-    justify-content:center; align-items:center; text-align:center;
-    background:linear-gradient(135deg,#1e293b 0%,#0f172a 50%,#1d4ed8 100%);
-  }
-  .hero h1 { font-size:3rem; margin-bottom:.5rem; }
-  .hero p { color:#94a3b8; font-size:1.1rem; }
-  .container { max-width:800px; margin:0 auto; padding:2rem 1.5rem; }
-  .card { background:#1e293b; border-radius:12px; padding:1.5rem; margin-bottom:1.5rem; transition:transform .2s; }
-  .card:hover { transform:translateY(-4px); }
-  h2 { color:#60a5fa; margin-bottom:1rem; }
-  .tags span { display:inline-block; background:#334155; color:#cbd5e1; padding:.3rem .8rem; border-radius:20px; margin:.2rem; font-size:.9rem; }
-  a { color:#60a5fa; text-decoration:none; }
-  footer { text-align:center; color:#475569; padding:2rem 0; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#dff7fb">
+  <meta name="description" content="初涵酱的个人主页：音游、术力口、cosplay，以及正在前进的技术路线。">
+  <title>初涵酱 · 一只正在升级的水蓝色小猫</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --sea: #dff7fb;
+      --foam: #f7feff;
+      --ice: #b8edf4;
+      --blue: #55c9dd;
+      --blue-deep: #167e99;
+      --ink: #173b4b;
+      --muted: #587b88;
+      --line: rgba(23, 91, 111, .19);
+      --coral: #ff8d82;
+      --yellow: #f8d979;
+      --shadow: 0 18px 50px rgba(39, 133, 153, .10);
+      --radius: 1.35rem;
+      --page: 1120px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+    body {
+      margin: 0;
+      background: var(--sea);
+      color: var(--ink);
+      font-family: ui-rounded, "Hiragino Maru Gothic ProN", "Yu Gothic", "Microsoft YaHei", system-ui, sans-serif;
+      line-height: 1.75;
+      overflow-wrap: anywhere;
+      transition: background .3s ease, color .3s ease;
+    }
+    body.night {
+      color-scheme: dark;
+      --sea: #102d40;
+      --foam: #173e52;
+      --ice: #245a70;
+      --blue: #69d5e8;
+      --blue-deep: #9beafa;
+      --ink: #e5faff;
+      --muted: #a8cbd7;
+      --line: rgba(187, 235, 246, .21);
+      --coral: #ff9c91;
+      --yellow: #f7df8a;
+      --shadow: 0 18px 50px rgba(0, 0, 0, .12);
+    }
+    a { color: var(--blue-deep); text-decoration-thickness: .08em; text-underline-offset: .22em; }
+    a:hover { text-decoration-thickness: .13em; }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; }
+    ::selection { background: var(--blue); color: #103241; }
+    .wrap { width: min(calc(100% - 2.2rem), var(--page)); margin-inline: auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 20;
+      border-bottom: 1px solid var(--line);
+      background: color-mix(in srgb, var(--sea) 88%, transparent);
+      backdrop-filter: blur(16px);
+    }
+    .topbar-inner { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .brand { color: var(--ink); font-weight: 900; letter-spacing: .02em; text-decoration: none; white-space: nowrap; }
+    .brand-mark { display: inline-grid; place-items: center; width: 1.7rem; height: 1.7rem; margin-right: .45rem; border: 2px solid currentColor; border-radius: 50% 50% 43% 43%; font-size: .72rem; transform: rotate(-8deg); }
+    nav { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: .25rem .95rem; }
+    nav a { font-size: .85rem; color: var(--muted); font-weight: 750; text-decoration: none; }
+    nav a:hover { color: var(--blue-deep); }
+    .mode-button, .pill-button, .plain-button {
+      cursor: pointer; border: 1px solid var(--line); border-radius: 999px; padding: .53rem .88rem;
+      background: var(--foam); font-weight: 800; font-size: .85rem; transition: transform .15s ease, border-color .15s ease, background .2s ease;
+    }
+    .mode-button:hover, .pill-button:hover, .plain-button:hover { transform: translateY(-2px); border-color: var(--blue-deep); }
+    .hero { position: relative; padding: clamp(3.8rem, 8vw, 7.2rem) 0 4rem; isolation: isolate; overflow: hidden; }
+    .hero::before, .hero::after { content: ""; position: absolute; z-index: -1; border: 1px solid rgba(53, 173, 197, .22); border-radius: 50%; pointer-events: none; }
+    .hero::before { width: min(70vw, 760px); aspect-ratio: 1; right: -15%; top: -26%; box-shadow: 0 0 0 24px rgba(82, 199, 217, .045), 0 0 0 60px rgba(82, 199, 217, .035); }
+    .hero::after { width: 13rem; height: 13rem; left: -9rem; bottom: 0; box-shadow: 0 0 0 22px rgba(82, 199, 217, .07); }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.22fr) minmax(260px, .78fr); gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: .55rem; margin: 0 0 1rem; color: var(--blue-deep); text-transform: uppercase; letter-spacing: .14em; font-size: .76rem; font-weight: 900; }
+    .eyebrow::before { content: ""; width: 1.8rem; height: 3px; background: var(--coral); border-radius: 9px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: clamp(3.6rem, 10vw, 7.4rem); letter-spacing: -.075em; line-height: .98; margin-bottom: 1.3rem; font-weight: 950; }
+    h1 .suffix { display: block; margin-top: .7rem; padding-left: .25rem; font-size: clamp(1.05rem, 2.2vw, 1.5rem); letter-spacing: .08em; font-weight: 750; color: var(--blue-deep); }
+    .hero-lead { max-width: 37rem; margin-bottom: 1.25rem; font-size: clamp(1.02rem, 1.7vw, 1.25rem); font-weight: 650; }
+    .hero-note { max-width: 35rem; color: var(--muted); font-size: .96rem; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.6rem; }
+    .tag { display: inline-flex; align-items: center; padding: .28rem .72rem; border: 1px solid var(--line); border-radius: 999px; background: color-mix(in srgb, var(--foam) 67%, transparent); color: var(--muted); font-size: .78rem; font-weight: 800; }
+    .cat-stage { min-height: 340px; position: relative; display: grid; place-items: center; }
+    .cat-halo { position: absolute; width: min(100%, 360px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--foam) 83%, transparent), color-mix(in srgb, var(--ice) 60%, transparent) 62%, transparent 63%); }
+    .cat-kaomoji-wrap { position: relative; width: min(100%, 365px); min-height: 245px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .7rem; color: var(--blue-deep); animation: floaty 4.5s ease-in-out infinite; }
+    .cat-kaomoji { position: relative; z-index: 1; white-space: nowrap; font-size: clamp(2.15rem, 5.7vw, 3.65rem); line-height: 1.3; font-weight: 950; letter-spacing: -.08em; text-shadow: 0 7px 24px rgba(39, 154, 181, .12); }
+    .cat-caption { font-size: .72rem; font-weight: 900; letter-spacing: .18em; color: var(--muted); text-align: center; }
+    .cat-caption span { color: var(--coral); letter-spacing: .04em; margin-left: .25rem; }
+    .kaomoji-spark { position: absolute; color: var(--blue); font-size: 2rem; font-weight: 950; }
+    .spark-one { top: 17%; left: 8%; transform: rotate(-12deg); }
+    .spark-two { right: 7%; bottom: 16%; transform: rotate(11deg); }
+    .cat-wave { color: var(--blue); opacity: .6; font-size: 1.15rem; letter-spacing: .25em; margin-top: -.7rem; }
+    @keyframes floaty { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-9px) rotate(1deg); } }
+    .bubble { position: absolute; top: 5%; right: 0; max-width: 190px; padding: .65rem .9rem; border: 1px solid var(--line); border-radius: 1rem 1rem 1rem .2rem; background: var(--foam); box-shadow: var(--shadow); font-size: .82rem; font-weight: 800; transform: rotate(3deg); }
+    .cat-button { position: absolute; left: 2%; bottom: 6%; border: 0; background: var(--ink); color: var(--sea); padding: .65rem 1rem; border-radius: 999px; box-shadow: var(--shadow); cursor: pointer; font-weight: 850; }
+    .cat-button:hover { transform: rotate(-2deg) translateY(-2px); }
+    .scroll-cue { display: flex; align-items: center; gap: .8rem; margin-top: 2.2rem; color: var(--muted); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; }
+    .scroll-cue::before { content: "↓"; display: grid; place-items: center; width: 1.8rem; height: 1.8rem; border: 1px solid var(--line); border-radius: 50%; font-size: 1rem; }
+    .section { padding: clamp(3.5rem, 7vw, 6.5rem) 0; position: relative; }
+    .section-head { display: grid; grid-template-columns: minmax(150px, .45fr) minmax(0, 1fr); gap: 1.5rem 3rem; align-items: end; margin-bottom: 2.7rem; }
+    .section-index { color: var(--blue-deep); font-weight: 950; font-size: .83rem; letter-spacing: .12em; }
+    h2 { margin-bottom: 0; font-size: clamp(2rem, 5vw, 3.75rem); line-height: 1.1; letter-spacing: -.055em; }
+    .section-intro { max-width: 42rem; margin: .8rem 0 0; color: var(--muted); }
+    .manifesto { display: grid; grid-template-columns: .8fr 1.2fr; gap: 1.5rem 4rem; padding: 2rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .word-stack { display: flex; flex-direction: column; gap: .15rem; font-weight: 950; font-size: clamp(1.7rem, 4vw, 3.2rem); line-height: 1.22; letter-spacing: -.05em; }
+    .word-stack span:nth-child(2) { color: var(--blue-deep); padding-left: 1.2rem; }
+    .word-stack span:nth-child(3) { padding-left: 2.4rem; }
+    .manifesto-copy { align-self: center; max-width: 42rem; }
+    .manifesto-copy p:last-child { margin-bottom: 0; }
+    .tiny-label { margin-bottom: .5rem; font-size: .72rem; font-weight: 900; letter-spacing: .13em; color: var(--muted); text-transform: uppercase; }
+    #otaku { background: var(--foam); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow: hidden; }
+    #otaku::before { content: "♪ ♫"; position: absolute; right: -1rem; top: 3rem; font-size: clamp(4rem, 12vw, 10rem); line-height: 1; color: color-mix(in srgb, var(--blue) 13%, transparent); font-weight: 900; transform: rotate(-9deg); pointer-events: none; }
+    .phigros-feature { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(255px, .8fr); gap: 0; border: 1px solid var(--line); background: var(--sea); position: relative; }
+    .phigros-main { padding: clamp(1.5rem, 4vw, 3.4rem); position: relative; overflow: hidden; }
+    .phigros-main::after { content: "16.60"; position: absolute; right: -1rem; bottom: -3.8rem; font-size: clamp(6rem, 17vw, 13rem); line-height: 1; font-weight: 1000; letter-spacing: -.1em; color: color-mix(in srgb, var(--blue) 15%, transparent); pointer-events: none; }
+    .phigros-main > * { position: relative; z-index: 1; }
+    .overline { font-size: .75rem; letter-spacing: .13em; color: var(--blue-deep); font-weight: 950; }
+    .phigros-title { margin: .5rem 0 .7rem; font-size: clamp(2.4rem, 6vw, 4.5rem); letter-spacing: -.075em; line-height: 1; }
+    .rks-line { display: flex; align-items: baseline; gap: .65rem; margin: 1.2rem 0; }
+    .rks-number { font-size: clamp(3.8rem, 8vw, 6.5rem); font-weight: 1000; letter-spacing: -.075em; line-height: 1; }
+    .rks-caption { color: var(--muted); font-weight: 800; font-size: .85rem; }
+    .goal-line { max-width: 30rem; font-weight: 700; }
+    .difficulty-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.3rem; }
+    .difficulty { display: inline-flex; min-width: 3.3rem; justify-content: center; padding: .22rem .5rem; border: 1px solid var(--line); font-size: .78rem; font-weight: 950; letter-spacing: .04em; }
+    .difficulty:nth-child(1) { border-color: #63a8e7; color: #2875b4; }
+    .difficulty:nth-child(2) { border-color: #f4af68; color: #b86a20; }
+    .difficulty:nth-child(3) { border-color: #e98baf; color: #ad4477; }
+    .phigros-side { background: var(--ice); border-left: 1px solid var(--line); padding: clamp(1.5rem, 3vw, 2.5rem); display: flex; flex-direction: column; justify-content: space-between; }
+    .beat-lanes { display: grid; grid-template-columns: repeat(4, 1fr); align-items: end; gap: .45rem; height: 100px; margin: 1rem 0 1.5rem; }
+    .beat-lanes span { display: block; border-radius: 999px 999px 3px 3px; background: var(--blue-deep); opacity: .75; animation: beat 1.2s ease-in-out infinite alternate; }
+    .beat-lanes span:nth-child(1) { height: 35%; animation-delay: -.5s; }
+    .beat-lanes span:nth-child(2) { height: 80%; animation-delay: -.1s; }
+    .beat-lanes span:nth-child(3) { height: 54%; animation-delay: -.8s; }
+    .beat-lanes span:nth-child(4) { height: 100%; animation-delay: -.3s; }
+    @keyframes beat { to { transform: scaleY(.5); opacity: .45; } }
+    .game-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0 2rem; margin-top: 2rem; border-top: 1px solid var(--line); }
+    .game-choice { position: relative; text-align: left; cursor: pointer; padding: 1rem .2rem; border: 0; border-bottom: 1px solid var(--line); background: transparent; display: flex; align-items: center; justify-content: space-between; gap: 1rem; font-weight: 850; }
+    .game-choice .arrow { color: var(--blue-deep); transition: transform .2s ease; }
+    .game-choice[aria-pressed="true"] .arrow { transform: rotate(45deg); }
+    .game-choice[aria-pressed="true"] { color: var(--blue-deep); }
+    .game-detail { min-height: 4.2rem; padding: .85rem 1rem; margin-top: 1rem; border-left: 3px solid var(--coral); background: color-mix(in srgb, var(--ice) 52%, transparent); font-size: .9rem; }
+    .anime-lines { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(1.6rem, 5vw, 4rem); margin-top: clamp(3rem, 6vw, 5rem); align-items: start; }
+    .anime-story { padding-top: 1.5rem; border-top: 2px solid var(--ink); }
+    .anime-story h3 { margin-bottom: .8rem; font-size: clamp(1.35rem, 3vw, 2rem); letter-spacing: -.04em; }
+    .anime-story p { color: var(--muted); }
+    .miku-mark { display: inline-block; margin: .3rem 0 1rem; color: var(--blue-deep); font-weight: 1000; font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1; letter-spacing: -.06em; }
+    .cat-note { display: flex; gap: 1.2rem; align-items: center; padding: 1.1rem 1.25rem; margin-top: 1.2rem; background: var(--sea); border: 1px dashed var(--line); }
+    .cat-stamp { display: grid; flex: 0 0 4rem; place-items: center; width: 4rem; height: 4rem; border-radius: 50%; background: var(--ice); color: var(--blue-deep); font-size: 2rem; }
+    .cat-note p { margin: 0; }
+    .interactive-section { overflow: hidden; }
+    .playground { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .play-panel { min-width: 0; padding: clamp(1.3rem, 3.5vw, 2.5rem) clamp(1rem, 3vw, 2rem); }
+    .play-panel + .play-panel { border-left: 1px solid var(--line); }
+    .play-panel h3 { margin-bottom: .4rem; font-size: clamp(1.4rem, 3vw, 2rem); letter-spacing: -.05em; }
+    .play-panel .description { min-height: 3.5rem; color: var(--muted); font-size: .9rem; }
+    .tap-zone { display: grid; place-items: center; width: 100%; min-height: 168px; margin: 1rem 0; border: 1px dashed var(--blue-deep); border-radius: 1.1rem; background: repeating-linear-gradient(135deg, transparent, transparent 12px, color-mix(in srgb, var(--blue) 9%, transparent) 12px, color-mix(in srgb, var(--blue) 9%, transparent) 24px); cursor: pointer; user-select: none; transition: transform .08s ease, background .2s ease; }
+    .tap-zone:active { transform: scale(.985); }
+    .tap-zone strong { display: block; font-size: 1.5rem; }
+    .tap-zone small { display: block; color: var(--muted); font-size: .8rem; }
+    .score-row { display: flex; justify-content: space-between; gap: 1rem; color: var(--muted); font-size: .85rem; font-weight: 750; }
+    .score-row b { color: var(--blue-deep); font-size: 1.1rem; }
+    .game-controls { display: flex; flex-wrap: wrap; gap: .55rem; margin: .7rem 0; }
+    .pill-button.primary { background: var(--ink); color: var(--sea); border-color: var(--ink); }
+    .guess-form { display: flex; gap: .6rem; margin: 1rem 0 .7rem; }
+    .guess-form input { width: 100%; min-width: 0; padding: .7rem .85rem; color: var(--ink); background: var(--foam); border: 1px solid var(--line); border-radius: .75rem; }
+    .guess-status { min-height: 3.5rem; padding: .75rem 0; color: var(--blue-deep); font-weight: 850; }
+    .guess-meta { display: flex; justify-content: space-between; gap: .7rem; padding-top: .7rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
+    .path-section { background: var(--ice); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .pathline { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin: 1.6rem 0; }
+    .path-step { padding: .65rem 1rem; background: var(--foam); border: 1px solid var(--line); font-weight: 950; }
+    .path-arrow { color: var(--blue-deep); font-size: 1.4rem; font-weight: 900; }
+    .path-notes { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2rem; margin-top: 2rem; }
+    .project-link { display: flex; align-items: center; gap: 1rem; max-width: 620px; padding: 1.1rem 1.25rem; color: var(--ink); background: var(--foam); border: 1px solid var(--line); text-decoration: none; }
+    .project-icon { display: grid; place-items: center; flex: 0 0 2.8rem; width: 2.8rem; height: 2.8rem; border-radius: 50%; background: var(--ice); font-size: 1.3rem; }
+    .project-link strong { display: block; }
+    .project-link small { color: var(--muted); }
+    .pitfall-list { counter-reset: fails; border-top: 1px solid var(--line); }
+    .pitfall { counter-increment: fails; display: grid; grid-template-columns: 3rem minmax(0,1fr); gap: .5rem 1rem; padding: 1.3rem 0; border-bottom: 1px solid var(--line); }
+    .pitfall::before { content: "0" counter(fails); align-self: start; color: var(--blue-deep); font-weight: 1000; font-size: .88rem; letter-spacing: .08em; }
+    .pitfall h3 { margin-bottom: .25rem; font-size: 1.05rem; }
+    .pitfall p { margin-bottom: 0; color: var(--muted); font-size: .92rem; }
+    .thinking { display: grid; grid-template-columns: .7fr 1.3fr; gap: 2rem 4rem; align-items: start; }
+    .quote { margin: 0; padding-left: 1.4rem; border-left: 4px solid var(--blue); font-size: clamp(1.3rem, 3.2vw, 2.3rem); font-weight: 900; letter-spacing: -.04em; line-height: 1.4; }
+    .quote cite { display: block; margin-top: 1rem; color: var(--muted); font-size: .8rem; font-style: normal; letter-spacing: 0; font-weight: 700; }
+    .thinking-copy { color: var(--muted); }
+    .thinking-copy p:last-child { margin-bottom: 0; }
+    .contact-section { background: var(--ink); color: var(--sea); }
+    .contact-section .section-index { color: var(--blue); }
+    .contact-section .section-intro, .contact-section .tiny-label { color: color-mix(in srgb, var(--sea) 68%, transparent); }
+    .contact-grid { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 3rem; align-items: start; }
+    .contact-links { border-top: 1px solid color-mix(in srgb, var(--sea) 25%, transparent); }
+    .contact-row { display: grid; grid-template-columns: 6rem minmax(0,1fr) auto; gap: .6rem; align-items: center; padding: .85rem 0; border-bottom: 1px solid color-mix(in srgb, var(--sea) 25%, transparent); }
+    .contact-label { color: color-mix(in srgb, var(--sea) 68%, transparent); font-size: .82rem; font-weight: 800; }
+    .contact-value { color: var(--sea); font-size: .92rem; text-decoration: none; }
+    .copy-button { cursor: pointer; border: 1px solid color-mix(in srgb, var(--sea) 33%, transparent); border-radius: 999px; padding: .32rem .6rem; background: transparent; color: var(--sea); font-size: .75rem; font-weight: 800; }
+    .copy-button:hover { background: color-mix(in srgb, var(--sea) 12%, transparent); }
+    .footer-note { margin-top: 2.8rem; padding-top: 1rem; border-top: 1px solid color-mix(in srgb, var(--sea) 25%, transparent); display: flex; justify-content: space-between; flex-wrap: wrap; gap: .75rem; color: color-mix(in srgb, var(--sea) 62%, transparent); font-size: .78rem; }
+    .footer-note a { color: var(--blue); }
+    .reveal { opacity: 1; transform: none; }
+    .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity .65s ease, transform .65s ease; }
+    .js .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+    @media (max-width: 800px) {
+      .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(210px, .8fr); gap: 1.3rem; }
+      .section-head { grid-template-columns: 1fr; gap: .5rem; }
+      .manifesto, .thinking { grid-template-columns: 1fr; gap: 1.5rem; }
+      .word-stack { flex-direction: row; flex-wrap: wrap; gap: .4rem 1.2rem; }
+      .word-stack span:nth-child(2), .word-stack span:nth-child(3) { padding-left: 0; }
+      .phigros-feature { grid-template-columns: 1fr; }
+      .phigros-side { border-left: 0; border-top: 1px solid var(--line); }
+      .beat-lanes { max-width: 260px; }
+      .path-notes { gap: 1.2rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(calc(100% - 1.25rem), var(--page)); }
+      .topbar-inner { align-items: flex-start; flex-direction: column; gap: .3rem; padding: .65rem 0 .75rem; }
+      nav { width: 100%; justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding: .25rem 0; scrollbar-width: none; }
+      nav::-webkit-scrollbar { display: none; }
+      nav a { flex: 0 0 auto; }
+      .top-actions { position: absolute; top: .65rem; right: 0; }
+      .mode-button { padding: .38rem .6rem; font-size: .75rem; }
+      .hero { padding-top: 3.2rem; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-copy { position: relative; z-index: 2; }
+      h1 { font-size: clamp(3.5rem, 18vw, 5rem); }
+      .cat-stage { min-height: 260px; margin-top: -1rem; }
+      .cat-kaomoji-wrap { width: min(100%, 300px); min-height: 205px; }
+      .cat-kaomoji { font-size: clamp(2rem, 8vw, 2.8rem); }
+      .cat-halo { width: min(76vw, 290px); }
+      .bubble { top: 0; right: 1%; max-width: 160px; font-size: .75rem; }
+      .cat-button { left: 3%; bottom: 4%; font-size: .8rem; }
+      .section { padding: 3.5rem 0; }
+      .anime-lines, .playground, .path-notes { grid-template-columns: 1fr; }
+      .play-panel + .play-panel { border-left: 0; border-top: 1px solid var(--line); }
+      .game-list { grid-template-columns: 1fr; }
+      .contact-row { grid-template-columns: 4.2rem minmax(0,1fr) auto; gap: .4rem; }
+      .contact-value { font-size: .8rem; }
+      .copy-button { padding: .3rem .5rem; }
+      .pathline { gap: .5rem; }
+      .path-step { padding: .55rem .7rem; }
+    }
+  </style>
 </head>
 <body>
-  <section class="hero">
-    <h1>刘子涵</h1>
-    <p>沈阳理工大学 · 装备工程学院 · 信息对抗技术</p>
-  </section>
-  <div class="container">
-    <div class="card">
-      <h2>👋 关于我</h2>
-      <p>信息对抗技术专业在读，正申请加入计算机协会与电子协会 Ambition 战队。目前在自学 C++ 基础，目标进入战队视觉组方向。平时喜欢折腾各类开发工具和环境，也写点 Python 小程序练手。</p>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#top"><span class="brand-mark">初</span>初涵酱的海面信号</a>
+      <nav aria-label="页面导航">
+        <a href="#about">认识我</a>
+        <a href="#otaku">二次元频道</a>
+        <a href="#play">互动一下</a>
+        <a href="#tech">技术路线</a>
+        <a href="#thoughts">想法</a>
+        <a href="#contact">联系</a>
+      </nav>
+      <div class="top-actions"><button class="mode-button" id="themeToggle" type="button" aria-pressed="false">切到夜海</button></div>
     </div>
-    <div class="card">
-      <h2>🎯 当前目标</h2>
-      <div class="tags">
-        <span>计协</span><span>电协 Ambition 战队</span><span>视觉组方向</span>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">PLAYER PROFILE / 个人主页</p>
+          <h1>初涵酱<span class="suffix">一只正在升级的水蓝色小猫</span></h1>
+          <p class="hero-lead">你好，我是初涵，真名刘子涵。比起把自己包装得很厉害，我更想把喜欢的东西、正在做的事，还有踩过的坑都摆在这里。</p>
+          <p class="hero-note">户籍吉林，在大连长大，也一直把自己当作大连人。现在是沈阳理工大学装备工程学院信息对抗技术专业的大一学生。</p>
+          <div class="hero-meta" aria-label="个人关键词">
+            <span class="tag">音游玩家</span><span class="tag">术力口听众</span><span class="tag">coser</span><span class="tag">技术路线加载中</span>
+          </div>
+          <div class="scroll-cue">向下探索我的精神海域</div>
+        </div>
+        <div class="cat-stage" aria-label="水蓝色小猫自设插画">
+          <div class="cat-halo"></div>
+          <div class="bubble" id="catBubble" aria-live="polite">这里是初涵酱的海面信号！</div>
+          <div class="cat-kaomoji-wrap" role="img" aria-label="水蓝色小猫颜文字">
+            <span class="kaomoji-spark spark-one" aria-hidden="true">♪</span>
+            <span class="kaomoji-spark spark-two" aria-hidden="true">♫</span>
+            <div class="cat-kaomoji" id="catFace">ฅ^•ω•^ฅ</div>
+            <div class="cat-caption">A LITTLE BLUE CAT <span>にゃ〜</span></div>
+            <div class="cat-wave" aria-hidden="true">〜 〜 〜 〜</div>
+          </div>
+          <button class="cat-button" id="catTalk" type="button">戳戳小猫</button>
+        </div>
       </div>
-    </div>
-    <div class="card">
-      <h2>🛠 技能</h2>
-      <div class="tags">
-        <span>C++（学习中）</span><span>Python（入门）</span><span>Git / GitHub</span><span>VS Code</span><span>Markdown</span>
+    </section>
+
+    <section class="section" id="about">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="section-index">01 / ABOUT</div>
+          <div><h2>先从三个词认识我。</h2><p class="section-intro">我想成为一个有目标、能判断，也愿意持续行动的人。理想不等于空想，认真也不等于只会埋头苦干。</p></div>
+        </div>
+        <div class="manifesto reveal">
+          <div class="word-stack" aria-label="理想、理性、奋斗"><span>理想。</span><span>理性。</span><span>奋斗。</span></div>
+          <div class="manifesto-copy">
+            <p class="tiny-label">MY OPERATING SYSTEM</p>
+            <p>心里要有想去的地方，但不能只靠想象抵达。我会先看客观条件，再分析有哪些路径可行，然后一步步去做。</p>
+            <p>对我来说，成长不是把简介写得越来越漂亮，而是能把今天不会的东西，慢慢变成自己确实会的东西。</p>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="card">
-      <h2>🔗 找到我</h2>
-      <p>GitHub：<a href="https://github.com/zihanliu07-crypto">zihanliu07-crypto</a></p>
-      <p>邮箱：zihanliu07@gmail.com</p>
-    </div>
-  </div>
-  <footer>© 2025 刘子涵 · Powered by GitHub Pages</footer>
+    </section>
+
+    <section class="section" id="otaku">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="section-index">02 / OTaku MODE</div>
+          <div><h2>我的二次元频道，<br>常年在线。</h2><p class="section-intro">这里是主页最热闹的部分。音游是核心，术力口是日常背景音，cosplay 则是我主动选择的一种表达方式。</p></div>
+        </div>
+
+        <div class="phigros-feature reveal">
+          <div class="phigros-main">
+            <div class="overline">MAIN GAME / 核心爱好</div>
+            <h3 class="phigros-title">Phigros</h3>
+            <div class="rks-line"><span class="rks-number">16.60</span><span class="rks-caption">个人 RKS</span></div>
+            <p class="goal-line">现在正冲刺全游 EZ / HD / IN 三难度制霸。目标摆在前面，谱面一张张啃。</p>
+            <div class="difficulty-row" aria-label="目标难度"><span class="difficulty">EZ</span><span class="difficulty">HD</span><span class="difficulty">IN</span><span class="tag">三难度制霸进行中</span></div>
+          </div>
+          <aside class="phigros-side">
+            <div>
+              <p class="tiny-label">KEEP THE BEAT</p>
+              <h3 style="font-size:1.45rem; margin-bottom:.4rem;">手速之外，还有耐心。</h3>
+              <p style="color:var(--muted); margin-bottom:0;">音游吸引我的地方，是节奏、判断与反复练习叠在一起的感觉。</p>
+            </div>
+            <div class="beat-lanes" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+            <p style="font-size:.82rem; color:var(--muted); margin:0;">点开下面的名字，看看它们在我的兴趣列表里。</p>
+          </aside>
+        </div>
+
+        <div class="game-list reveal" aria-label="兴趣选择">
+          <button class="game-choice" type="button" data-game="phigros" aria-pressed="true"><span>Phigros</span><span class="arrow">＋</span></button>
+          <button class="game-choice" type="button" data-game="malody" aria-pressed="false"><span>Malody</span><span class="arrow">＋</span></button>
+          <button class="game-choice" type="button" data-game="ryceam" aria-pressed="false"><span>Ryceam</span><span class="arrow">＋</span></button>
+          <button class="game-choice" type="button" data-game="milthm" aria-pressed="false"><span>Milthm</span><span class="arrow">＋</span></button>
+        </div>
+        <div class="game-detail reveal" id="gameDetail" aria-live="polite">这是我的音游主线：个人 RKS 16.60，正在冲刺 EZ / HD / IN 三难度全游制霸。</div>
+
+        <div class="anime-lines">
+          <article class="anime-story reveal">
+            <p class="tiny-label">VOCALOID / 听歌时段</p>
+            <span class="miku-mark">初音未来</span>
+            <h3>术力口是我的常驻歌单。</h3>
+            <p>我会听 Vocaloid（术力口）歌曲，也喜欢初音未来。对于我来说，音乐不只是填满安静的背景，它也是兴趣的一部分。</p>
+          </article>
+          <article class="anime-story reveal">
+            <p class="tiny-label">COSPLAY / 自我表达</p>
+            <h3>男生，也会认真做 cos。</h3>
+            <p>我喜欢二次元文化，也会 cos 音游看板娘。想追求更好看、也更优秀的自己；性别不该替我决定能不能尝试，独立与自主才是我想表达的东西。</p>
+          </article>
+        </div>
+        <div class="cat-note reveal">
+          <div class="cat-stamp" aria-hidden="true">ฅ</div>
+          <p><strong>我的自设：</strong>一只可爱的水蓝色小猫。<br><span style="color:var(--muted); font-size:.9rem;">如果这张主页有一个精神 mascot，那就是它。水蓝色、海风，还有一点点节奏感。</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section interactive-section" id="play">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="section-index">03 / PLAY</div>
+          <div><h2>别只看主页，<br>来动一下手。</h2><p class="section-intro">两个很轻的小玩法：一个测试你能在倒计时里点多少下，一个是猜数字。它们都只在当前页面运行。</p></div>
+        </div>
+        <div class="playground reveal">
+          <section class="play-panel" aria-labelledby="tapTitle">
+            <p class="tiny-label">RHYTHM CHECK</p>
+            <h3 id="tapTitle">十秒节奏热身</h3>
+            <p class="description">点击开始，再尽量稳定地戳下面的区域。倒计时结束后看一下自己的点击数。</p>
+            <div class="score-row"><span>剩余时间 <b id="tapTime">10.0s</b></span><span>点击数 <b id="tapScore">0</b></span></div>
+            <button class="tap-zone" id="tapZone" type="button" disabled><span><strong id="tapLabel">准备好了吗？</strong><small id="tapSub">先点「开始节奏」</small></span></button>
+            <div class="game-controls"><button class="pill-button primary" type="button" id="tapStart">开始节奏</button><button class="plain-button" type="button" id="tapReset">重置</button></div>
+            <p id="tapResult" aria-live="polite" style="font-size:.85rem;color:var(--muted);margin:0;">这不是正式音游判定，只是一个点击热身。</p>
+          </section>
+          <section class="play-panel" aria-labelledby="guessTitle">
+            <p class="tiny-label">NUMBER GAME</p>
+            <h3 id="guessTitle">猜猜海面数字</h3>
+            <p class="description">我做过 Python 猜数字小游戏。这里也放了一个可以直接玩的网页版本：数字范围是 1–100。</p>
+            <form class="guess-form" id="guessForm">
+              <label for="guessInput" class="sr-only" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">输入 1 到 100 的整数</label>
+              <input id="guessInput" type="number" min="1" max="100" inputmode="numeric" placeholder="输入 1–100" required>
+              <button class="pill-button primary" type="submit">猜！</button>
+            </form>
+            <div class="guess-status" id="guessStatus" aria-live="polite">数字已经藏好，等你来猜。</div>
+            <div class="game-controls"><button class="plain-button" type="button" id="guessNew">换一个数字</button></div>
+            <div class="guess-meta"><span>本局次数：<b id="guessCount">0</b></span><span>个人纪录：7 次猜中</span></div>
+            <p style="font-size:.78rem;color:var(--muted);margin:.8rem 0 0;">每次重新开始会生成一个新数字，不会上传或保存你的输入。</p>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="section path-section" id="tech">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="section-index">04 / BUILD</div>
+          <div><h2>从现在会的，走向想做的。</h2><p class="section-intro">我正在加入计算机协会和电子协会 Ambition 战队，目标方向是战队视觉组。路线先拆小，再逐项完成。</p></div>
+        </div>
+        <div class="pathline reveal" aria-label="学习路线">
+          <span class="path-step">C++ 基础</span><span class="path-arrow" aria-hidden="true">→</span>
+          <span class="path-step">OpenCV</span><span class="path-arrow" aria-hidden="true">→</span>
+          <span class="path-step">战队视觉组方向</span>
+        </div>
+        <div class="path-notes reveal">
+          <div>
+            <p class="tiny-label">FIRST PROJECT</p>
+            <h3 style="font-size:1.45rem; margin-bottom:.6rem;">先把第一个小项目放出来。</h3>
+            <p style="color:var(--muted);">目前已有一个 Python 猜数字小游戏。体量不大，但它是我把想法变成可运行程序的一次练习。</p>
+            <a class="project-link" href="https://github.com/zihanliu07-crypto/guess-number" target="_blank" rel="noopener noreferrer">
+              <span class="project-icon" aria-hidden="true">⌘</span><span><strong>guess-number</strong><small>在 GitHub 查看 Python 猜数字小游戏 ↗</small></span>
+            </a>
+          </div>
+          <div>
+            <p class="tiny-label">REAL DEBUG LOG</p>
+            <h3 style="font-size:1.45rem; margin-bottom:.6rem;">踩坑也是学习记录。</h3>
+            <p style="color:var(--muted);">以下都是我确实遇到过的事，不是为了把成长故事写得漂亮。</p>
+            <div class="pitfall-list">
+              <article class="pitfall"><div><h3>中文文件名，让网站 404 一整天</h3><p>第一版个人网站因为文件名用了中文，在 GitHub Pages 上 404 了一整天，最后被 C 语言老师点破。</p></div></article>
+              <article class="pitfall"><div><h3>双击程序就闪退</h3><p>配环境时电脑根本没装 Python，我却对着双击后闪退的情况排查了半天。</p></div></article>
+              <article class="pitfall"><div><h3>把多行 git 命令整块粘贴</h3><p>命令行里的行序错乱，直接报错。现在会记住：命令要看清楚再执行，不是粘贴进去就算完成。</p></div></article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="thoughts">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="section-index">05 / UNDER THE SURFACE</div>
+          <div><h2>可爱是外观，<br>判断要有自己的依据。</h2><p class="section-intro">这一部分不用写得很响亮，但它确实是我做选择时会带着的东西。</p></div>
+        </div>
+        <div class="thinking reveal">
+          <blockquote class="quote">“人民，只有人民，才是创造历史的动力”<cite>——我读高中时读过《毛泽东选集》，这句话一直留在我的思考里。</cite></blockquote>
+          <div class="thinking-copy">
+            <p>毛泽东哲学塑造了我的一部分三观。我会用“为了谁、依靠谁、怎么办”提醒自己，做事不能只盯着个人得失，也要想清楚行动的对象、依靠的力量和实际的办法。</p>
+            <p>我是共青团员，也在正向党组织靠拢。技术上，我相信开源 AI 是未来：开源意味着分享，能让技术更普惠，也更公平。</p>
+            <p>我关注人工智能和数理基础科学，希望一辈子研究理工，用逻辑和智慧做出能造福人民的东西。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="wrap">
+        <div class="contact-grid">
+          <div class="reveal">
+            <p class="section-index">06 / SIGNAL</p>
+            <h2>信号在这里。<br>有缘就来打个招呼。</h2>
+            <p class="section-intro">音游、术力口、cosplay、技术路线——有共同话题的话，欢迎来找我。</p>
+            <p class="tiny-label" style="margin-top:2rem;">PROFILE NOTE</p>
+            <p style="max-width:25rem;color:color-mix(in srgb, var(--sea) 76%, transparent);">理想放在远处，理性用来辨路，奋斗留给每天。主页会随着我继续学习而更新。</p>
+          </div>
+          <div class="contact-links reveal" aria-label="联系方式">
+            <div class="contact-row"><span class="contact-label">微信</span><span class="contact-value">lzh3770615047</span><button class="copy-button" type="button" data-copy="lzh3770615047">复制</button></div>
+            <div class="contact-row"><span class="contact-label">QQ</span><span class="contact-value">3770615047</span><button class="copy-button" type="button" data-copy="3770615047">复制</button></div>
+            <div class="contact-row"><span class="contact-label">Bilibili</span><a class="contact-value" href="https://space.bilibili.com/611771296" target="_blank" rel="noopener noreferrer">UID 611771296 ↗</a><button class="copy-button" type="button" data-copy="611771296">复制 UID</button></div>
+            <div class="contact-row"><span class="contact-label">邮箱 01</span><a class="contact-value" href="mailto:lzh3613765394@163.com">lzh3613765394@163.com</a><button class="copy-button" type="button" data-copy="lzh3613765394@163.com">复制</button></div>
+            <div class="contact-row"><span class="contact-label">邮箱 02</span><a class="contact-value" href="mailto:zihanliu07@gmail.com">zihanliu07@gmail.com</a><button class="copy-button" type="button" data-copy="zihanliu07@gmail.com">复制</button></div>
+            <p id="copyStatus" aria-live="polite" style="min-height:1.5rem;margin:.7rem 0 0;color:var(--blue);font-size:.82rem;"></p>
+          </div>
+        </div>
+        <footer class="footer-note"><span>© 初涵酱 · 一只水蓝色小猫的个人主页</span><a href="#top">回到海面 ↑</a><span>单文件 HTML · 无外部依赖</span></footer>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      document.documentElement.classList.add('js');
+      const body = document.body;
+      const themeToggle = document.getElementById('themeToggle');
+      themeToggle.addEventListener('click', () => {
+        const isNight = body.classList.toggle('night');
+        themeToggle.textContent = isNight ? '切到晴海' : '切到夜海';
+        themeToggle.setAttribute('aria-pressed', String(isNight));
+      });
+
+      const catBubble = document.getElementById('catBubble');
+      const catTalk = document.getElementById('catTalk');
+      const catFace = document.getElementById('catFace');
+      const catFaces = ['ฅ^•ω•^ฅ', 'ฅ(˶ᵔ ᵕ ᵔ˶)ฅ', 'ฅ( ̳• ·̫ • ̳)ฅ', 'ฅ^>⩊<^ฅ', 'ฅ(=චᆽච=ฅ)'];
+      const catLines = [
+        '这里是初涵酱的海面信号！',
+        '谱面可以慢慢啃，别忘了喝水。',
+        '理想放远一点，下一步走实一点。',
+        '水蓝色小猫，今天也在升级中。',
+        '欢迎来聊音游、术力口和技术。'
+      ];
+      let catLineIndex = 0;
+      catTalk.addEventListener('click', () => {
+        catLineIndex = (catLineIndex + 1) % catLines.length;
+        catBubble.textContent = catLines[catLineIndex];
+        catFace.textContent = catFaces[catLineIndex];
+      });
+
+      const gameDetails = {
+        phigros: '这是我的音游主线：个人 RKS 16.60，正在冲刺 EZ / HD / IN 三难度全游制霸。',
+        malody: 'Malody 也是我玩的音游之一，和其他音游一起构成了我的兴趣列表。',
+        ryceam: 'Ryceam 是我的音游兴趣之一。点开它只是切换展示内容，不代表这里记录了额外成绩。',
+        milthm: 'Milthm 也在我的音游列表里。不同作品放在一起，才是我自己的音游频道。'
+      };
+      const gameButtons = Array.from(document.querySelectorAll('[data-game]'));
+      const gameDetail = document.getElementById('gameDetail');
+      gameButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          gameButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+          gameDetail.textContent = gameDetails[button.dataset.game];
+        });
+      });
+
+      const tapStart = document.getElementById('tapStart');
+      const tapReset = document.getElementById('tapReset');
+      const tapZone = document.getElementById('tapZone');
+      const tapTime = document.getElementById('tapTime');
+      const tapScore = document.getElementById('tapScore');
+      const tapLabel = document.getElementById('tapLabel');
+      const tapSub = document.getElementById('tapSub');
+      const tapResult = document.getElementById('tapResult');
+      let tapCount = 0;
+      let tapDeadline = 0;
+      let tapTimer = null;
+      let tapActive = false;
+      function stopTapGame() {
+        tapActive = false;
+        tapZone.disabled = true;
+        tapStart.disabled = false;
+        tapStart.textContent = '再来一次';
+        if (tapTimer !== null) window.clearInterval(tapTimer);
+        tapTimer = null;
+      }
+      function resetTapGame() {
+        if (tapTimer !== null) window.clearInterval(tapTimer);
+        tapTimer = null;
+        tapActive = false;
+        tapCount = 0;
+        tapTime.textContent = '10.0s';
+        tapScore.textContent = '0';
+        tapLabel.textContent = '准备好了吗？';
+        tapSub.textContent = '先点「开始节奏」';
+        tapResult.textContent = '这不是正式音游判定，只是一个点击热身。';
+        tapZone.disabled = true;
+        tapStart.disabled = false;
+        tapStart.textContent = '开始节奏';
+      }
+      tapStart.addEventListener('click', () => {
+        if (tapTimer !== null) window.clearInterval(tapTimer);
+        tapCount = 0;
+        tapScore.textContent = '0';
+        tapTime.textContent = '10.0s';
+        tapResult.textContent = '开始！保持自己的节奏。';
+        tapLabel.textContent = '点！点！点！';
+        tapSub.textContent = '点击区域计数';
+        tapActive = true;
+        tapZone.disabled = false;
+        tapStart.disabled = true;
+        tapDeadline = Date.now() + 10000;
+        tapTimer = window.setInterval(() => {
+          const remaining = Math.max(0, tapDeadline - Date.now());
+          tapTime.textContent = (remaining / 1000).toFixed(1) + 's';
+          if (remaining <= 0) {
+            stopTapGame();
+            tapTime.textContent = '0.0s';
+            tapLabel.textContent = '本局结束';
+            tapSub.textContent = '点击开始，可以再试一次';
+            tapResult.textContent = '十秒内点击了 ' + tapCount + ' 次。稳定比着急更重要。';
+          }
+        }, 50);
+      });
+      tapZone.addEventListener('click', () => {
+        if (!tapActive) return;
+        tapCount += 1;
+        tapScore.textContent = String(tapCount);
+      });
+      tapReset.addEventListener('click', resetTapGame);
+
+      const guessForm = document.getElementById('guessForm');
+      const guessInput = document.getElementById('guessInput');
+      const guessStatus = document.getElementById('guessStatus');
+      const guessCountText = document.getElementById('guessCount');
+      const guessNew = document.getElementById('guessNew');
+      let secretNumber = Math.floor(Math.random() * 100) + 1;
+      let guessCount = 0;
+      let guessFinished = false;
+      function newGuessRound() {
+        secretNumber = Math.floor(Math.random() * 100) + 1;
+        guessCount = 0;
+        guessFinished = false;
+        guessCountText.textContent = '0';
+        guessInput.value = '';
+        guessInput.disabled = false;
+        guessStatus.textContent = '数字已经藏好，等你来猜。';
+        const submitButton = guessForm.querySelector('button[type="submit"]');
+        submitButton.disabled = false;
+        guessInput.focus();
+      }
+      guessForm.addEventListener('submit', event => {
+        event.preventDefault();
+        if (guessFinished) return;
+        const guess = Number(guessInput.value);
+        if (!Number.isInteger(guess) || guess < 1 || guess > 100) {
+          guessStatus.textContent = '输入一个 1 到 100 之间的整数再试试。';
+          return;
+        }
+        guessCount += 1;
+        guessCountText.textContent = String(guessCount);
+        if (guess === secretNumber) {
+          guessStatus.textContent = '猜中了！你用了 ' + guessCount + ' 次。要不要再开一局？';
+          guessFinished = true;
+          guessInput.disabled = true;
+          guessForm.querySelector('button[type="submit"]').disabled = true;
+        } else if (guess < secretNumber) {
+          guessStatus.textContent = '还小了，再往大一点猜。';
+        } else {
+          guessStatus.textContent = '超过了，往小一点试。';
+        }
+        if (!guessFinished) {
+          guessInput.select();
+        }
+      });
+      guessNew.addEventListener('click', newGuessRound);
+
+      const copyStatus = document.getElementById('copyStatus');
+      async function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return;
+        }
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        temp.setAttribute('readonly', '');
+        temp.style.position = 'fixed';
+        temp.style.opacity = '0';
+        document.body.appendChild(temp);
+        temp.select();
+        const copied = document.execCommand('copy');
+        temp.remove();
+        if (!copied) throw new Error('复制失败');
+      }
+      document.querySelectorAll('[data-copy]').forEach(button => {
+        button.addEventListener('click', async () => {
+          const value = button.dataset.copy;
+          try {
+            await copyText(value);
+            copyStatus.textContent = '已复制：' + value;
+          } catch (error) {
+            copyStatus.textContent = '浏览器没有允许自动复制，请手动选择并复制：' + value;
+          }
+        });
+      });
+
+      const revealItems = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.08 });
+        revealItems.forEach(item => revealObserver.observe(item));
+      } else {
+        revealItems.forEach(item => item.classList.add('visible'));
+      }
+    })();
+  </script>
 </body>
 </html>
