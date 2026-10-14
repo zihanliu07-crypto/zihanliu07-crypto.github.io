@@ -987,11 +987,21 @@
       const systemColorScheme = typeof window.matchMedia === 'function'
         ? window.matchMedia('(prefers-color-scheme: dark)')
         : null;
+      // 某些内嵌 WebView 会把宿主应用主题写入 UA；若存在明确标记，优先于系统媒体查询。
+      // 例如企业微信使用过 ColorScheme/Dark。普通 QQ/微信 H5 并不保证提供此标记。
+      const embeddedColorScheme = (() => {
+        const ua = navigator.userAgent || '';
+        const match = ua.match(/\bcolorscheme\/(dark|light)\b/i);
+        return match ? match[1].toLowerCase() : null;
+      })();
       // 新版使用独立的偏好键，避免旧版曾自动保存的 day/night 值覆盖系统默认。
       const themePreferenceKey = 'chuhan-theme-preference-v2';
       let themePreference = 'system';
 
       function resolveSystemTheme() {
+        // 先使用宿主 WebView 明确暴露的深浅主题，再使用标准 prefers-color-scheme。
+        if (embeddedColorScheme === 'dark') return true;
+        if (embeddedColorScheme === 'light') return false;
         return Boolean(systemColorScheme && systemColorScheme.matches);
       }
 
@@ -1005,11 +1015,11 @@
         themeToggle.setAttribute('aria-label', isNight ? '当前夜海模式，点击切换到晴海' : '当前晴海模式，点击切换到夜海');
         systemThemeToggle.setAttribute('aria-pressed', String(preference === 'system'));
         systemThemeToggle.setAttribute('aria-label', preference === 'system'
-          ? '正在跟随系统配色；点击后固定当前模式'
-          : '启用跟随系统配色');
+          ? '正在跟随系统或内置浏览器可用的主题信号；点击后固定当前模式'
+          : '启用跟随系统或内置浏览器主题信号');
         systemThemeToggle.title = preference === 'system'
-          ? '正在跟随系统深浅配色，点击可固定当前模式'
-          : '点击后根据设备的日间/夜间外观自动切换';
+          ? '优先读取系统或内置 WebView 提供的深浅主题信号；若宿主不暴露主题，请用晴海/夜海按钮手动选择'
+          : '点击后恢复跟随系统或内置 WebView 提供的主题信号';
         if (themeMeta) themeMeta.content = isNight ? '#102d40' : '#dff7fb';
         if (persist) {
           try { localStorage.setItem(themePreferenceKey, preference); }
