@@ -805,6 +805,107 @@
 
   <script>
     (() => {
+      // 回到海面兼容补丁：部分移动端内置 WebView（如 QQ）可能中断原生锚点的平滑滚动，
+      // 所以所有指向 #top 的链接统一改用强制回顶，并在短时间内重复校准滚动容器位置。
+      let topScrollFrame = null;
+      let topScrollRestoreTimer = null;
+      let savedHtmlScrollBehavior = null;
+      let savedBodyScrollBehavior = null;
+
+      // 回到海面兼容补丁：用 JS 自己驱动平滑动画，避免部分内置 WebView
+      // 对原生锚点平滑滚动的处理中途停止；结束时再做轻量位置校准。
+      function scrollPageTopCompat() {
+        const html = document.documentElement;
+        const body = document.body;
+        const scrollingElement = document.scrollingElement || html;
+        const reducedMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+        const getScrollY = () => Math.max(
+          Number(window.pageYOffset) || 0,
+          Number(window.scrollY) || 0,
+          Number(scrollingElement.scrollTop) || 0,
+          Number(html.scrollTop) || 0,
+          Number(body.scrollTop) || 0
+        );
+        const setScrollY = value => {
+          const y = Math.max(0, Math.round(value));
+          try { window.scrollTo(0, y); } catch (error) { /* 继续尝试直接设置滚动容器 */ }
+          try { scrollingElement.scrollTop = y; } catch (error) { /* 部分 WebView 不允许直接写入 */ }
+          if (scrollingElement !== html) {
+            try { html.scrollTop = y; } catch (error) { /* 忽略只读滚动容器 */ }
+          }
+          if (scrollingElement !== body) {
+            try { body.scrollTop = y; } catch (error) { /* 忽略只读滚动容器 */ }
+          }
+        };
+        const startY = getScrollY();
+
+        // 如果再次点击，取消上一段动画，但继续沿用最初保存的样式值。
+        if (topScrollFrame !== null && typeof window.cancelAnimationFrame === 'function') {
+          window.cancelAnimationFrame(topScrollFrame);
+          topScrollFrame = null;
+        }
+        if (topScrollRestoreTimer !== null) {
+          window.clearTimeout(topScrollRestoreTimer);
+          topScrollRestoreTimer = null;
+        }
+        if (savedHtmlScrollBehavior === null) {
+          savedHtmlScrollBehavior = html.style.scrollBehavior;
+          savedBodyScrollBehavior = body.style.scrollBehavior;
+        }
+        // 自定义逐帧动画期间关闭 CSS 原生 smooth，避免两种滚动动画互相竞争。
+        html.style.scrollBehavior = 'auto';
+        body.style.scrollBehavior = 'auto';
+
+        const restoreBehaviorSoon = () => {
+          // QQ 等 WebView 可能在动画结束后才更新滚动位置，最后再校准两次。
+          if (typeof window.requestAnimationFrame === 'function') {
+            window.requestAnimationFrame(() => setScrollY(0));
+          }
+          topScrollRestoreTimer = window.setTimeout(() => {
+            setScrollY(0);
+            html.style.scrollBehavior = savedHtmlScrollBehavior || '';
+            body.style.scrollBehavior = savedBodyScrollBehavior || '';
+            savedHtmlScrollBehavior = null;
+            savedBodyScrollBehavior = null;
+            topScrollRestoreTimer = null;
+          }, 140);
+        };
+
+        if (reducedMotion || startY < 2 || typeof window.requestAnimationFrame !== 'function') {
+          setScrollY(0);
+          topScrollFrame = null;
+          restoreBehaviorSoon();
+          return;
+        }
+
+        let startTime = null;
+        const duration = Math.min(680, Math.max(380, startY * 0.24));
+        const animate = timestamp => {
+          if (startTime === null) startTime = timestamp;
+          const progress = Math.min(1, (timestamp - startTime) / duration);
+          const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic：先快后慢
+          setScrollY(startY * (1 - eased));
+          if (progress < 1) {
+            topScrollFrame = window.requestAnimationFrame(animate);
+          } else {
+            topScrollFrame = null;
+            setScrollY(0);
+            restoreBehaviorSoon();
+          }
+        };
+        topScrollFrame = window.requestAnimationFrame(animate);
+      }
+
+      // 捕获阶段拦截原生锚点默认动作，避免 QQ 内置浏览器的平滑滚动停在中途。
+      document.addEventListener('click', event => {
+        const target = event.target instanceof Element ? event.target : null;
+        const topLink = target && target.closest('a[href="#top"]');
+        // 无障碍跳过链接用于定位主内容，保留它自己的锚点行为。
+        if (!topLink || topLink.classList.contains('skip-link')) return;
+        event.preventDefault();
+        scrollPageTopCompat();
+      }, true);
+
 
       // 自设图鉴：图片内嵌于当前 HTML，不访问外部资源；支持筛选、放大和键盘切换。
       const artFilters = Array.from(document.querySelectorAll('[data-art-filter]'));
