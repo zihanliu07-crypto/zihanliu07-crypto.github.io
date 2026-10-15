@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#dff7fb">
-  <meta name="description" content="初涵酱的水蓝色个人海域：音游、术力口、cosplay、互动节奏台与正在前进的技术路线。">
+  <meta name="description" content="初涵酱的水蓝色个人海域：音游进度、术力口曲风、cosplay、自设图鉴、节奏工房与个人成长记录。">
   <meta name="color-scheme" content="light dark">
   <meta property="og:type" content="website">
   <meta property="og:title" content="初涵酱 · 一只正在升级的水蓝色小猫">
@@ -68,6 +68,7 @@
     }
     .topbar-inner { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
     .brand { color: var(--ink); font-weight: 900; letter-spacing: .02em; text-decoration: none; white-space: nowrap; }
+    .brand-title-short { display: none; }
     .brand-mark { display: inline-grid; place-items: center; width: 1.7rem; height: 1.7rem; margin-right: .45rem; border: 2px solid currentColor; border-radius: 50% 50% 43% 43%; font-size: .72rem; transform: rotate(-8deg); }
     nav { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: .25rem .95rem; }
     nav a { font-size: .85rem; color: var(--muted); font-weight: 750; text-decoration: none; }
@@ -231,6 +232,9 @@
     @media (max-width: 560px) {
       .wrap { width: min(calc(100% - 1.25rem), var(--page)); }
       .topbar-inner { align-items: flex-start; flex-direction: column; gap: .3rem; padding: .65rem 0 .75rem; }
+      .brand-title-long { display: none; }
+      .brand-title-short { display: inline; }
+      .brand { font-size: .9rem; }
       nav { width: 100%; justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding: .25rem 0; scrollbar-width: none; }
       nav::-webkit-scrollbar { display: none; }
       nav a { flex: 0 0 auto; }
@@ -484,6 +488,115 @@
       .hero-art-trigger, .hero-art-image, .art-tile, .art-open img { transition: none !important; }
     }
 
+
+    /* New profile modules: rhythm progress, listening tastes, cosplay and local growth log. */
+    .music-taste { margin-top: 1.15rem; padding-top: .9rem; border-top: 1px dashed var(--line); }
+    .music-taste-row { display: grid; grid-template-columns: 5.6rem minmax(0,1fr); gap: .65rem; align-items: start; margin-top: .65rem; }
+    .music-taste-label { padding-top: .22rem; color: var(--muted); font-size: .76rem; font-weight: 850; }
+    .taste-tags { display: flex; flex-wrap: wrap; gap: .38rem; }
+    .taste-tags span { display: inline-flex; padding: .28rem .6rem; border: 1px solid var(--line); border-radius: 999px; background: color-mix(in srgb, var(--ice) 45%, transparent); color: var(--blue-deep); font-size: .76rem; font-weight: 850; }
+    .taste-tags-artist span { border-radius: .45rem; background: var(--foam); }
+    .rhythm-profile-section { background: color-mix(in srgb, var(--ice) 35%, var(--sea)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .rhythm-dashboard { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(260px,.8fr); border: 1px solid var(--line); background: var(--foam); }
+    .rhythm-current, .rhythm-routine { padding: clamp(1.25rem,3.3vw,2.2rem); min-width: 0; }
+    .rhythm-current { border-right: 1px solid var(--line); }
+    .current-chapter { display: flex; align-items: center; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px solid var(--line); }
+    .chapter-number { display: grid; flex: 0 0 4.4rem; place-items: center; width: 4.4rem; height: 4.4rem; border-radius: 1rem .35rem 1rem .35rem; background: var(--ice); color: var(--blue-deep); font-size: 2.2rem; line-height: 1; letter-spacing: -.08em; font-weight: 1000; }
+    .current-chapter > div { display: grid; gap: .2rem; flex: 1; min-width: 0; }
+    .current-chapter strong, .ap-item strong { font-size: 1rem; }
+    .current-chapter > div span, .ap-item small { color: var(--muted); font-size: .79rem; }
+    .status-pill { display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; padding: .23rem .52rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .69rem; font-weight: 850; }
+    .status-active { border-color: color-mix(in srgb, var(--blue-deep) 45%, var(--line)); color: var(--blue-deep); background: color-mix(in srgb, var(--ice) 60%, transparent); }
+    .ap-item { display: grid; grid-template-columns: 2.1rem minmax(0,1fr) auto; align-items: center; gap: .7rem; padding: .9rem 0; border-bottom: 1px solid var(--line); }
+    .ap-symbol { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: .6rem; background: color-mix(in srgb, var(--coral) 22%, var(--foam)); color: var(--blue-deep); font-size: 1.1rem; }
+    .ap-item > div { display: grid; gap: .12rem; min-width: 0; }
+    .practice-tags { display: flex; align-items: center; flex-wrap: wrap; gap: .48rem; margin-top: 1.15rem; }
+    .practice-tags .tiny-label { margin: 0 .3rem 0 0; }
+    .practice-tag { padding: .35rem .68rem; border: 1px solid var(--line); background: var(--sea); color: var(--blue-deep); font-size: .78rem; font-weight: 900; border-radius: .4rem; }
+    .rhythm-routine { display: flex; flex-direction: column; justify-content: center; background: color-mix(in srgb, var(--ice) 30%, var(--foam)); }
+    .rhythm-routine h3 { margin: .2rem 0 .8rem; font-size: clamp(1.3rem, 2.7vw, 1.8rem); letter-spacing: -.04em; }
+    .routine-list { list-style: none; margin: .2rem 0 1rem; padding: 0; }
+    .routine-list li { display: flex; align-items: center; gap: .7rem; padding: .62rem 0; border-bottom: 1px dashed var(--line); font-weight: 800; }
+    .routine-list li span { display: grid; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--foam); color: var(--blue-deep); font-size: .7rem; }
+    .rhythm-routine > p:last-child { margin: 0; color: var(--muted); font-size: .85rem; }
+    .handcam-banner { display: flex; align-items: center; gap: 1rem; margin-top: 1.15rem; padding: 1rem 1.25rem; border: 1px solid var(--line); color: var(--ink); background: var(--foam); text-decoration: none; transition: border-color .2s, transform .2s; }
+    .handcam-banner:hover { border-color: var(--blue-deep); transform: translateY(-2px); }
+    .handcam-icon { display: grid; place-items: center; flex: 0 0 3rem; width: 3rem; height: 3rem; border-radius: 50%; background: var(--coral); color: #fff; font-size: 1.25rem; }
+    .handcam-copy { display: grid; gap: .12rem; flex: 1; min-width: 0; }
+    .handcam-copy small { color: var(--blue-deep); font-size: .67rem; letter-spacing: .11em; font-weight: 950; }
+    .handcam-copy strong { font-size: 1rem; }
+    .handcam-copy > span { color: var(--muted); font-size: .82rem; }
+    .handcam-arrow { color: var(--blue-deep); font-size: 1.5rem; font-weight: 900; }
+    .roadmap-section { background: var(--foam); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .roadmap-intro { display: flex; align-items: center; gap: 1rem; max-width: 900px; margin: 0 auto 2rem; padding: 1rem 1.15rem; border-left: 3px solid var(--coral); background: color-mix(in srgb, var(--ice) 36%, var(--foam)); }
+    .roadmap-intro-mark { display: grid; place-items: center; flex: 0 0 3.2rem; height: 3.2rem; border-radius: 50%; background: var(--sea); color: var(--blue-deep); font-weight: 950; font-size: .85rem; }
+    .roadmap-intro p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .roadmap-intro strong { color: var(--ink); }
+    .roadmap-timeline { position: relative; max-width: 900px; margin: 0 auto; padding-left: 3.35rem; }
+    .roadmap-timeline::before { content: ""; position: absolute; top: .8rem; bottom: 1.6rem; left: .78rem; width: 2px; background: linear-gradient(to bottom, var(--blue-deep), var(--line) 72%, var(--coral)); }
+    .roadmap-node { position: relative; margin: 0 0 1rem; border: 1px solid var(--line); background: var(--sea); transition: border-color .2s ease, transform .2s ease; }
+    .roadmap-node:hover { border-color: color-mix(in srgb, var(--blue-deep) 60%, var(--line)); }
+    .roadmap-node::before { content: ""; position: absolute; left: -3.09rem; top: 1.05rem; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--foam); border: 2px solid var(--blue-deep); box-shadow: 0 0 0 5px var(--foam); }
+    .roadmap-node[open]::before { background: var(--blue); }
+    .roadmap-node summary { display: grid; grid-template-columns: 2rem minmax(0,1fr) auto; gap: .35rem .8rem; align-items: center; padding: 1.05rem 1.15rem; cursor: pointer; list-style: none; }
+    .roadmap-node summary::-webkit-details-marker { display: none; }
+    .roadmap-heading { display: grid; gap: .22rem; min-width: 0; }
+    .roadmap-heading strong { font-size: clamp(1rem, 2.3vw, 1.18rem); line-height: 1.4; }
+    .roadmap-heading small { color: var(--muted); font-size: .81rem; line-height: 1.5; }
+    .roadmap-number { display: grid; place-items: center; align-self: start; width: 2rem; height: 2rem; border-radius: .65rem .2rem .65rem .2rem; background: var(--ice); color: var(--blue-deep); font-size: .75rem; font-weight: 1000; }
+    .roadmap-status { justify-self: start; display: inline-flex; padding: .17rem .5rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .67rem; font-weight: 900; letter-spacing: .03em; }
+    .roadmap-status.status-now { background: color-mix(in srgb, var(--blue) 16%, var(--foam)); color: var(--blue-deep); border-color: color-mix(in srgb, var(--blue-deep) 35%, var(--line)); }
+    .roadmap-status.status-target { background: color-mix(in srgb, var(--coral) 13%, var(--foam)); }
+    .roadmap-status.status-future { background: color-mix(in srgb, var(--yellow) 18%, var(--foam)); }
+    .roadmap-chevron { display: grid; place-items: center; width: 1.9rem; height: 1.9rem; border-radius: 50%; background: var(--foam); color: var(--blue-deep); transition: transform .2s ease; }
+    .roadmap-node[open] .roadmap-chevron { transform: rotate(180deg); }
+    .roadmap-detail { padding: 0 1.15rem 1.15rem; animation: roadmapReveal .24s ease both; }
+    .roadmap-detail p { margin: 0 0 .8rem; color: var(--muted); font-size: .9rem; }
+    .roadmap-detail .roadmap-note { margin-top: .9rem; padding: .7rem .8rem; border-left: 2px solid var(--coral); background: color-mix(in srgb, var(--ice) 25%, transparent); font-size: .81rem; }
+    .roadmap-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .roadmap-tags span { padding: .23rem .55rem; border: 1px solid var(--line); background: var(--foam); color: var(--blue-deep); font-size: .72rem; font-weight: 800; }
+    .roadmap-inline-link { display: inline-block; margin-top: .85rem; font-size: .82rem; font-weight: 850; }
+    .roadmap-convergence { display: flex; align-items: flex-start; gap: 1rem; max-width: 900px; margin: 1.4rem auto 0; padding: 1rem 1.15rem; border-top: 1px dashed var(--line); }
+    .roadmap-convergence-icon { display: grid; place-items: center; flex: 0 0 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--ice); color: var(--blue-deep); font-size: 1.3rem; }
+    .roadmap-convergence strong { display: block; margin-bottom: .25rem; }
+    .roadmap-convergence p { margin: 0; color: var(--muted); font-size: .86rem; }
+    .growth-log-section { background: var(--sea); }
+    .journal-board { padding: clamp(1.15rem, 3vw, 2rem); min-width: 0; background: color-mix(in srgb, var(--ice) 27%, var(--sea)); border: 1px solid var(--line); }
+    .journal-board-standalone { max-width: 840px; margin: 0 auto; }
+    .journal-board h3 { margin: .1rem 0 .5rem; font-size: clamp(1.35rem, 2.7vw, 1.8rem); letter-spacing: -.045em; }
+    .journal-intro { color: var(--muted); font-size: .85rem; }
+    .journal-label { display: block; margin: .8rem 0 .3rem; font-size: .78rem; font-weight: 850; }
+    .journal-date-input, .journal-board textarea { display: block; width: 100%; border: 1px solid var(--line); border-radius: .65rem; padding: .7rem .8rem; background: var(--foam); color: var(--ink); }
+    .journal-board textarea { min-height: 8.7rem; resize: vertical; line-height: 1.65; }
+    .journal-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .55rem; margin-top: 1rem; }
+    .journal-status { min-height: 2rem; margin: .65rem 0 0; color: var(--muted); font-size: .74rem; }
+    @keyframes roadmapReveal { from { opacity: .5; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+    @media (max-width: 800px) {
+      .rhythm-dashboard { grid-template-columns: 1fr; }
+      .rhythm-current { border-right: 0; border-bottom: 1px solid var(--line); }
+      .rhythm-routine { background: var(--foam); }
+    }
+    @media (max-width: 560px) {
+      .music-taste-row { grid-template-columns: 1fr; gap: .25rem; }
+      .current-chapter { gap: .6rem; flex-wrap: wrap; }
+      .chapter-number { flex-basis: 3.6rem; width: 3.6rem; height: 3.6rem; font-size: 1.9rem; }
+      .current-chapter .status-pill { margin-left: auto; }
+      .ap-item { grid-template-columns: 1.8rem minmax(0,1fr) auto; gap: .5rem; }
+      .ap-item small { line-height: 1.45; }
+      .handcam-banner { gap: .65rem; padding: .85rem; }
+      .handcam-icon { flex-basis: 2.5rem; width: 2.5rem; height: 2.5rem; }
+      .handcam-copy strong { font-size: .88rem; }
+      .handcam-copy > span { font-size: .74rem; }
+      .roadmap-timeline { padding-left: 2rem; }
+      .roadmap-timeline::before { left: .35rem; }
+      .roadmap-node::before { left: -2.17rem; width: 1.15rem; height: 1.15rem; top: 1.15rem; }
+      .roadmap-node summary { grid-template-columns: 1.7rem minmax(0,1fr) auto; padding: .9rem .8rem; gap: .35rem .5rem; }
+      .roadmap-number { width: 1.7rem; height: 1.7rem; }
+      .roadmap-detail { padding: 0 .8rem .9rem; }
+      .roadmap-intro { align-items: flex-start; padding: .85rem; }
+      .roadmap-intro-mark { flex-basis: 2.6rem; height: 2.6rem; font-size: .75rem; }
+      .roadmap-convergence { padding: .9rem 0; }
+    }
   </style>
 </head>
 <body>
@@ -491,13 +604,16 @@
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"><span id="scrollProgressBar"></span></div>
   <header class="topbar">
     <div class="wrap topbar-inner">
-      <a class="brand" href="#top"><span class="brand-mark">初</span>初涵的海面信号</a>
+      <a class="brand" href="#top"><span class="brand-mark">初</span><span class="brand-title-long">初涵的海面信号</span><span class="brand-title-short">初涵酱</span></a>
       <nav aria-label="页面导航">
         <a href="#about">认识我</a>
         <a href="#otaku">二次元频道</a>
+        <a href="#rhythm-profile">音游档案</a>
         <a href="#play">互动一下</a>
         <a href="#studio">节奏工房</a>
-        <a href="#tech">技术路线</a>
+        <a href="#roadmap">技术路线图</a>
+        <a href="#projects">项目与踩坑</a>
+        <a href="#growth-log">成长日志</a>
         <a href="#thoughts">想法</a>
         <a href="#contact">联系</a>
       </nav>
@@ -511,7 +627,7 @@
         <div class="hero-copy">
           <p class="eyebrow">PLAYER PROFILE / 个人主页</p>
           <h1>初涵酱<span class="suffix">一只正在升级的水蓝色小猫</span></h1>
-          <p class="hero-lead">你好，我是初涵。比起把自己包装得很厉害，我更想把喜欢的东西、正在做的事，还有踩过的坑都摆在这里。</p>
+          <p class="hero-lead">你好，我是初涵。希望你最后记住的，是一个可爱而认真的初涵酱。喜欢的东西会认真玩，正在做的事和踩过的坑也都摆在这里。</p>
           <p class="hero-note">户籍吉林，在大连长大，也一直把自己当作大连人。现在是沈阳理工大学装备工程学院信息对抗技术专业的大一学生。</p>
           <div class="hero-meta" aria-label="个人关键词">
             <span class="tag">音游玩家</span><span class="tag">术力口听众</span><span class="tag">coser</span><span class="tag">技术路线加载中</span>
@@ -549,7 +665,7 @@
           <div class="manifesto-copy">
             <p class="tiny-label">MY OPERATING SYSTEM</p>
             <p>心里要有想去的地方，但不能只靠想象抵达。我会先看客观条件，再分析有哪些路径可行，然后一步步去做。</p>
-            <p>对我来说，成长不是把简介写得越来越漂亮，而是能把今天不会的东西，慢慢变成自己确实会的东西。</p>
+            <p>对我来说，成长就是把今天还不会的东西，一点点学成自己确实会的本领。</p>
           </div>
         </div>
       </div>
@@ -593,13 +709,17 @@
           <article class="anime-story reveal">
             <p class="tiny-label">VOCALOID / 听歌时段</p>
             <span class="miku-mark">初音未来</span>
-            <h3>术力口是我的常驻歌单。</h3>
-            <p>我会听 Vocaloid（术力口）歌曲，也喜欢初音未来。对于我来说，音乐不只是填满安静的背景，它也是兴趣的一部分。</p>
+            <h3>术力口随缘听，曲风偏好很明确。</h3>
+            <p>术力口基本是刷到哪首就听哪首，我也喜欢初音未来。相比固定歌单，我更容易被曲风抓住：Artcore、Drum&amp;Bass，还有一些实验性表达。</p>
+            <div class="music-taste" aria-label="音乐偏好">
+              <div class="music-taste-row"><span class="music-taste-label">常听曲风</span><div class="taste-tags"><span>Artcore</span><span>Drum&amp;Bass</span><span>实验性风格</span></div></div>
+              <div class="music-taste-row"><span class="music-taste-label">喜欢的曲师</span><div class="taste-tags taste-tags-artist"><span>Reku Mochizuki</span><span>RiraN</span></div></div>
+            </div>
           </article>
           <article class="anime-story reveal">
             <p class="tiny-label">COSPLAY / 自我表达</p>
-            <h3>男生，也会认真做 cos。</h3>
-            <p>我喜欢二次元文化，也会 cos 音游看板娘。想追求更好看、也更优秀的自己；性别不该替我决定能不能尝试，独立与自主才是我想表达的东西。</p>
+            <h3>cosplay 是我主动选择的表达。</h3>
+            <p>我 cos 过《Project SEKAI》的晓山瑞希、东云绘名和天马司。目前也尝试过 JK、洛丽塔和地雷系；接下来想出一些术力口歌姬，以及其他亚文化女装。未来可能还会试试涩谷辣妹风。想尝试什么，就认真研究什么。</p>
           </article>
         </div>
         <section class="art-archive reveal" aria-labelledby="artArchiveTitle">
@@ -656,10 +776,41 @@
       </div>
     </section>
 
+    <section class="section rhythm-profile-section" id="rhythm-profile">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="section-index">03 / PLAYER LOG</div>
+          <div><h2>最近的谱面，<br>还有下一步。</h2><p class="section-intro">RKS 是一个数字，真正让我继续打下去的，是还有谱面想推、还有手法想练。</p></div>
+        </div>
+        <div class="rhythm-dashboard reveal">
+          <div class="rhythm-current">
+            <p class="tiny-label">CURRENT QUEST / 当前进度</p>
+            <div class="current-chapter"><span class="chapter-number">09</span><div><strong>Phigros 主线第九章</strong><span>正在推进中</span></div><span class="status-pill status-active">进行中</span></div>
+            <div class="ap-list" aria-label="尚未 AP 的曲目">
+              <div class="ap-item"><span class="ap-symbol" aria-hidden="true">♪</span><div><strong>Igallta</strong><small>还没有 AP · 准备找机会冲一冲</small></div><span class="status-pill">待 AP</span></div>
+              <div class="ap-item"><span class="ap-symbol" aria-hidden="true">♫</span><div><strong>NMR</strong><small>还没有 AP · 目标清单进行中</small></div><span class="status-pill">待 AP</span></div>
+            </div>
+            <div class="practice-tags"><span class="tiny-label">想加强的手法</span><span class="practice-tag">4K</span><span class="practice-tag">DFC / 双指底力</span></div>
+          </div>
+          <aside class="rhythm-routine">
+            <p class="tiny-label">BEFORE PLAY / 开打前的固定流程</p>
+            <h3>先把设备安排好。</h3>
+            <ol class="routine-list"><li><span>01</span>调试设备</li><li><span>02</span>支起手机支架</li><li><span>03</span>开始打歌</li></ol>
+            <p>对我来说，正式开打前先把设备调好，能让我更安心地进入状态。</p>
+          </aside>
+        </div>
+        <a class="handcam-banner reveal" href="https://space.bilibili.com/611771296" target="_blank" rel="noopener noreferrer">
+          <span class="handcam-icon" aria-hidden="true">▶</span>
+          <span class="handcam-copy"><small>BILIBILI / RHYTHM HANDCAM</small><strong>我想认真经营好 B 站账号，主要发布音游手元。</strong><span>欢迎来互粉！UID 611771296</span></span>
+          <span class="handcam-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
+
     <section class="section interactive-section" id="play">
       <div class="wrap">
         <div class="section-head reveal">
-          <div class="section-index">03 / PLAY <button class="star-find" type="button" data-star="play" aria-label="收集互动区域的海星" title="这里藏着一颗海星">✦</button></div>
+          <div class="section-index">04 / PLAY <button class="star-find" type="button" data-star="play" aria-label="收集互动区域的海星" title="这里藏着一颗海星">✦</button></div>
           <div><h2>别只看主页，<br>来动一下手。</h2><p class="section-intro">两个很轻的小玩法：一个测试你能在倒计时里点多少下，一个是猜数字。它们都只在当前页面运行。</p></div>
         </div>
         <div class="playground reveal">
@@ -670,7 +821,7 @@
             <div class="score-row"><span>剩余时间 <b id="tapTime">10.0s</b></span><span>点击数 <b id="tapScore">0</b></span><span>个人最佳 <b id="tapBest">0</b></span></div>
             <button class="tap-zone" id="tapZone" type="button" disabled><span><strong id="tapLabel">准备好了吗？</strong><small id="tapSub">先点「开始节奏」</small></span></button>
             <div class="game-controls"><button class="pill-button primary" type="button" id="tapStart">开始节奏</button><button class="plain-button" type="button" id="tapReset">重置</button></div>
-            <p id="tapResult" aria-live="polite" style="font-size:.85rem;color:var(--muted);margin:0;">这不是正式音游判定，只是一个点击热身。</p>
+            <p id="tapResult" aria-live="polite" style="font-size:.85rem;color:var(--muted);margin:0;">这是一个轻量的十秒点击热身，不计入正式音游成绩。</p>
           </section>
           <section class="play-panel" aria-labelledby="guessTitle">
             <p class="tiny-label">NUMBER GAME</p>
@@ -693,7 +844,7 @@
     <section class="section rhythm-studio" id="studio">
       <div class="wrap">
         <div class="section-head reveal">
-          <div class="section-index">04 / RHYTHM LAB</div>
+          <div class="section-index">05 / RHYTHM LAB</div>
           <div><h2>海面节奏工房。</h2><p class="section-intro">自己点亮节拍格子，组合一段小节奏。声音由浏览器即时合成，不加载音频文件；按下播放后才会启用音频。</p></div>
         </div>
         <div class="sequencer reveal">
@@ -711,16 +862,138 @@
       </div>
     </section>
 
-    <section class="section path-section" id="tech">
+    <section class="section roadmap-section" id="roadmap">
       <div class="wrap">
         <div class="section-head reveal">
-          <div class="section-index">05 / BUILD <button class="star-find" type="button" data-star="build" aria-label="收集技术路线的海星" title="这里藏着一颗海星">✦</button></div>
-          <div><h2>从现在会的，走向想做的。</h2><p class="section-intro">我正在加入计算机协会和电子协会 Ambition 战队，目标方向是战队视觉组。路线先拆小，再逐项完成。</p></div>
+          <div class="section-index">06 / ROADMAP</div>
+          <div><h2>从编程基础，走向生成式 AI。</h2><p class="section-intro">这张路线图记录了我希望逐步走通的技术路径：从眼前的 C / C++ 基础出发，积累工程实践，补齐数学与机器学习知识，最终走向开源生成式人工智能研究。</p></div>
         </div>
-        <div class="pathline reveal" aria-label="学习路线">
-          <span class="path-step">C++ 基础</span><span class="path-arrow" aria-hidden="true">→</span>
-          <span class="path-step">OpenCV</span><span class="path-arrow" aria-hidden="true">→</span>
-          <span class="path-step">战队视觉组方向</span>
+
+        <div class="roadmap-intro reveal">
+          <span class="roadmap-intro-mark" aria-hidden="true">航线</span>
+          <p><strong>先把基础走稳，再逐渐靠近研究。</strong><br>下面标出的“当前起点”和“目标方向”对应我现在的真实状态；更后面的阶段是规划，不代表我已经学完或做过。点开每一站，可以看到这一步准备积累什么。</p>
+        </div>
+
+        <div class="roadmap-timeline">
+          <details class="roadmap-node reveal" open>
+            <summary>
+              <span class="roadmap-number">01</span>
+              <span class="roadmap-heading"><span class="roadmap-status status-now">当前起点</span><strong>C / C++ 基础理论</strong><small>先把编程的地基打牢。</small></span>
+              <span class="roadmap-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="roadmap-detail">
+              <p>我准备一鼓作气补齐 C 和 C++ 的基础理论知识，逐步理解程序如何运行、数据如何组织，以及出现错误时该从哪里排查。语法是起点，理解原理和动手调试同样重要。</p>
+              <div class="roadmap-tags"><span>语法与控制流程</span><span>函数与数据组织</span><span>指针 / 引用与内存</span><span>类与基础抽象</span></div>
+            </div>
+          </details>
+
+          <details class="roadmap-node reveal">
+            <summary>
+              <span class="roadmap-number">02</span>
+              <span class="roadmap-heading"><span class="roadmap-status">近期积累</span><strong>编程工程能力：Python、算法与工具链</strong><small>把“能写出来”推进到“能调试、能维护、能复现”。</small></span>
+              <span class="roadmap-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="roadmap-detail">
+              <p>我已经做过 Python 猜数字小游戏。接下来会继续练习编程，并逐步补上数据结构与算法、Git 使用、命令行环境和调试习惯，为以后做更完整的项目打好基础。</p>
+              <div class="roadmap-tags"><span>已有 Python 小项目</span><span>数据结构与算法</span><span>Git / Linux</span><span>调试与复现</span></div>
+              <a class="roadmap-inline-link" href="https://github.com/zihanliu07-crypto/guess-number" target="_blank" rel="noopener noreferrer">查看现有项目：guess-number ↗</a>
+            </div>
+          </details>
+
+          <details class="roadmap-node reveal">
+            <summary>
+              <span class="roadmap-number">03</span>
+              <span class="roadmap-heading"><span class="roadmap-status status-target">工程实践方向</span><strong>OpenCV 与战队视觉组</strong><small>把 C++ 基础放进一个真实的视觉应用方向里练习。</small></span>
+              <span class="roadmap-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="roadmap-detail">
+              <p>这是我现在明确希望靠近的实践方向：继续学习 OpenCV，并以计算机协会、电子协会 Ambition 战队的视觉组为目标。通过图像处理和视觉任务，把语言知识连接到实际问题上。</p>
+              <div class="roadmap-tags"><span>C++ 实践</span><span>OpenCV</span><span>图像处理</span><span>Ambition 视觉组目标</span></div>
+              <p class="roadmap-note">视觉实践是我的一条工程路线，能帮助我积累编程、调试和解决问题的经验。未来走向生成式 AI 研究时，我也会继续学习数学、算法和模型实践。</p>
+            </div>
+          </details>
+
+          <details class="roadmap-node reveal">
+            <summary>
+              <span class="roadmap-number">04</span>
+              <span class="roadmap-heading"><span class="roadmap-status">研究基础规划</span><strong>数学与数据基础</strong><small>为理解模型建立可以反复使用的工具。</small></span>
+              <span class="roadmap-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="roadmap-detail">
+              <p>当编程基础更稳后，我需要逐步补齐机器学习会用到的数学和数据处理能力，理解模型为何这样工作，以及实验结果究竟意味着什么。</p>
+              <div class="roadmap-tags"><span>线性代数</span><span>微积分</span><span>概率与统计</span><span>优化基础</span><span>Python 数值计算</span></div>
+            </div>
+          </details>
+
+          <details class="roadmap-node reveal">
+            <summary>
+              <span class="roadmap-number">05</span>
+              <span class="roadmap-heading"><span class="roadmap-status">研究基础规划</span><strong>机器学习与深度学习</strong><small>从理解算法，到自己训练、验证和分析模型。</small></span>
+              <span class="roadmap-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="roadmap-detail">
+              <p>之后可以通过经典机器学习方法进入模型训练，再学习神经网络与深度学习框架。除了让模型跑起来，也要关注数据划分、评价指标、过拟合和实验记录，学会判断一次实验究竟说明了什么。</p>
+              <div class="roadmap-tags"><span>机器学习基础</span><span>神经网络</span><span>PyTorch 等框架</span><span>训练与验证</span><span>实验分析</span></div>
+            </div>
+          </details>
+
+          <details class="roadmap-node reveal">
+            <summary>
+              <span class="roadmap-number">06</span>
+              <span class="roadmap-heading"><span class="roadmap-status">长期目标前的准备</span><strong>生成式 AI：Transformer 与大模型</strong><small>从使用模型，走向理解模型、实验模型。</small></span>
+              <span class="roadmap-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="roadmap-detail">
+              <p>有了编程、数学和深度学习基础后，我希望系统接触 Transformer、大语言模型及开源模型生态，理解分词、数据、训练与推理、微调和评估之间的关系，并逐步读懂模型的实现方式。</p>
+              <div class="roadmap-tags"><span>Transformer</span><span>LLM</span><span>训练与推理</span><span>微调与评估</span><span>开源模型</span></div>
+            </div>
+          </details>
+
+          <details class="roadmap-node reveal">
+            <summary>
+              <span class="roadmap-number">07</span>
+              <span class="roadmap-heading"><span class="roadmap-status status-future">最终方向</span><strong>参与开源生成式 AI 研究</strong><small>把学习变成可以检查、复现和分享的成果。</small></span>
+              <span class="roadmap-chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="roadmap-detail">
+              <p>这是我希望长期走向的方向，目前仍在规划和积累阶段。我可以从阅读论文、复现实验、记录环境与指标开始，再尝试改进一个小问题、整理公开代码与文档，并逐步参与开源社区协作。</p>
+              <div class="roadmap-tags"><span>论文阅读</span><span>实验复现</span><span>结果记录</span><span>开源协作</span><span>提出自己的问题</span></div>
+            </div>
+          </details>
+        </div>
+
+        <div class="roadmap-convergence reveal">
+          <span class="roadmap-convergence-icon" aria-hidden="true">✧</span>
+          <div><strong>两条积累线，最后在研究里汇合。</strong><p> C++ / OpenCV 帮我练工程实践与视觉问题；Python、数学和机器学习帮助我逐步走近模型训练与生成式 AI。它们可以相互促进，不必把自己限制在单一路线上。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section growth-log-section" id="growth-log">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="section-index">07 / GROWTH LOG</div>
+          <div><h2>给未来的自己留个记录。</h2><p class="section-intro">这里留给学习过程中的真实记录：一次练习的感受、一个刚弄懂的知识点，或某个值得回看的思路。</p></div>
+        </div>
+        <section class="journal-board journal-board-standalone reveal" aria-labelledby="journalTitle">
+          <p class="tiny-label">CAPTAIN'S LOG / 本地成长记录</p>
+          <h3 id="journalTitle">最近有什么值得记下？</h3>
+          <p class="journal-intro">记录只保存在当前浏览器中，不会上传到网站服务器。想长期保存时，可以导出成文本文件。</p>
+          <label class="journal-label" for="journalDate">记录日期</label>
+          <input class="journal-date-input" id="journalDate" type="date">
+          <label class="journal-label" for="journalText">成长记录</label>
+          <textarea id="journalText" rows="5" maxlength="4000" placeholder="今天学到的东西、音游练习的感受、遇到的问题，或者一个突然想到的点子……"></textarea>
+          <div class="journal-actions"><button class="pill-button primary" id="journalSave" type="button">保存到本机</button><button class="plain-button" id="journalExport" type="button">导出 .txt</button></div>
+          <p class="journal-status" id="journalStatus" aria-live="polite">记录只存在当前浏览器的本地存储中。</p>
+        </section>
+      </div>
+    </section>
+
+    <section class="section path-section" id="projects">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="section-index">08 / BUILD LOG <button class="star-find" type="button" data-star="build" aria-label="收集项目与踩坑区域的海星" title="这里藏着一颗海星">✦</button></div>
+          <div><h2>项目先落地，踩坑也算经验。</h2><p class="section-intro">路线图写的是想走向哪里；这里留下已经做过的项目，以及真正遇到过的错误。它们提醒我，技术能力是在一次次运行、失败和修正里积累的。</p></div>
         </div>
         <div class="path-notes reveal">
           <div>
@@ -734,11 +1007,11 @@
           <div>
             <p class="tiny-label">REAL DEBUG LOG</p>
             <h3 style="font-size:1.45rem; margin-bottom:.6rem;">踩坑也是学习记录。</h3>
-            <p style="color:var(--muted);">以下都是我确实遇到过的事，不是为了把成长故事写得漂亮。</p>
+            <p style="color:var(--muted);">以下记录的都是我亲身遇到过的经历，也保留了当时笨拙但真实的过程。</p>
             <div class="pitfall-list">
               <article class="pitfall"><div><h3>中文文件名，让网站 404 一整天</h3><p>第一版个人网站因为文件名用了中文，在 GitHub Pages 上 404 了一整天，最后被 C 语言老师点破。</p></div></article>
               <article class="pitfall"><div><h3>双击程序就闪退</h3><p>配环境时电脑根本没装 Python，我却对着双击后闪退的情况排查了半天。</p></div></article>
-              <article class="pitfall"><div><h3>把多行 git 命令整块粘贴</h3><p>命令行里的行序错乱，直接报错。现在会记住：命令要看清楚再执行，不是粘贴进去就算完成。</p></div></article>
+              <article class="pitfall"><div><h3>把多行 git 命令整块粘贴</h3><p>命令行里的行序错乱，导致命令报错。现在我会先看清命令内容和执行顺序，再逐条运行。</p></div></article>
             </div>
           </div>
         </div>
@@ -748,7 +1021,7 @@
     <section class="section" id="thoughts">
       <div class="wrap">
         <div class="section-head reveal">
-          <div class="section-index">06 / UNDER THE SURFACE <button class="star-find" type="button" data-star="thoughts" aria-label="收集思考区域的海星" title="这里藏着一颗海星">✦</button></div>
+          <div class="section-index">09 / UNDER THE SURFACE <button class="star-find" type="button" data-star="thoughts" aria-label="收集思考区域的海星" title="这里藏着一颗海星">✦</button></div>
           <div><h2>可爱是外观，<br>判断要有自己的依据。</h2><p class="section-intro">这一部分不用写得很响亮，但它确实是我做选择时会带着的东西。</p></div>
         </div>
         <div class="thinking reveal">
@@ -766,7 +1039,7 @@
       <div class="wrap">
         <div class="contact-grid">
           <div class="reveal">
-            <p class="section-index">07 / SIGNAL</p>
+            <p class="section-index">09 / SIGNAL</p>
             <h2>信号在这里。<br>有缘就来打个招呼。</h2>
             <p class="section-intro">音游、术力口、cosplay、技术路线——有共同话题的话，欢迎来找我。</p>
             <p class="tiny-label" style="margin-top:2rem;">PROFILE NOTE</p>
@@ -1075,7 +1348,7 @@
       });
 
       const gameDetails = {
-        phigros: '这是我的音游主线：个人 RKS 16.60，正在冲刺 EZ / HD / IN 三难度全游制霸。',
+        phigros: '这是我的音游主线：个人 RKS 16.60，冲刺 EZ / HD / IN 三难度制霸；目前也在推第九章，并想找机会把 Igallta 和 NMR 冲到 AP。',
         malody: 'Malody 也是我玩的音游之一，和其他音游一起构成了我的兴趣列表。',
         ryceam: 'Ryceam 是我的音游兴趣之一。点开它只是切换展示内容，不代表这里记录了额外成绩。',
         milthm: 'Milthm 也在我的音游列表里。不同作品放在一起，才是我自己的音游频道。'
@@ -1122,7 +1395,7 @@
         tapScore.textContent = '0';
         tapLabel.textContent = '准备好了吗？';
         tapSub.textContent = '先点「开始节奏」';
-        tapResult.textContent = '这不是正式音游判定，只是一个点击热身。';
+        tapResult.textContent = '这是一个轻量的十秒点击热身，不计入正式音游成绩。';
         tapZone.disabled = true;
         tapStart.disabled = false;
         tapStart.textContent = '开始节奏';
@@ -1444,14 +1717,23 @@
 
       // 4. 阅读进度与导航跟随，长页面也能知道自己浏览到哪里。
       const progressBar = document.getElementById('scrollProgressBar');
-      function updateScrollProgress() {
+      let progressUpdateFrame = null;
+      function updateScrollProgressNow() {
         const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-        const percent = scrollable > 0 ? Math.min(100, Math.max(0, window.scrollY / scrollable * 100)) : 0;
+        const currentY = Number(window.scrollY) || Number(document.documentElement.scrollTop) || 0;
+        const percent = scrollable > 0 ? Math.min(100, Math.max(0, currentY / scrollable * 100)) : 0;
         progressBar.style.width = percent.toFixed(2) + '%';
       }
+      function updateScrollProgress() {
+        if (progressUpdateFrame !== null) return;
+        progressUpdateFrame = window.requestAnimationFrame(() => {
+          progressUpdateFrame = null;
+          updateScrollProgressNow();
+        });
+      }
       window.addEventListener('scroll', updateScrollProgress, { passive: true });
-      window.addEventListener('resize', updateScrollProgress);
-      updateScrollProgress();
+      window.addEventListener('resize', updateScrollProgress, { passive: true });
+      updateScrollProgressNow();
       const sectionLinks = Array.from(document.querySelectorAll('nav a[href^="#"]'));
       if ('IntersectionObserver' in window) {
         const navObserver = new IntersectionObserver(entries => {
@@ -1511,6 +1793,64 @@
           activeNotes.forEach((node, index) => { if (index < activeNotes.length - 54) node.remove(); });
         }
       }, { passive: true });
+
+      // 本地成长日志：仅保存在访问者当前浏览器，不会发往服务器。
+      const journalStorageKey = 'chuhan-growth-journal-v1';
+      function localDateString(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return year + '-' + month + '-' + day;
+      }
+      const journalDateInput = document.getElementById('journalDate');
+      const journalText = document.getElementById('journalText');
+      const journalSave = document.getElementById('journalSave');
+      const journalExport = document.getElementById('journalExport');
+      const journalStatus = document.getElementById('journalStatus');
+      let savedJournal = { date: localDateString(new Date()), text: '' };
+      try {
+        const storedJournal = JSON.parse(localStorage.getItem(journalStorageKey) || 'null');
+        if (storedJournal && typeof storedJournal === 'object') {
+          if (typeof storedJournal.date === 'string') savedJournal.date = storedJournal.date;
+          if (typeof storedJournal.text === 'string') savedJournal.text = storedJournal.text;
+        }
+      } catch (error) { /* 使用空白日志作为降级 */ }
+      if (journalDateInput) journalDateInput.value = savedJournal.date;
+      if (journalText) journalText.value = savedJournal.text;
+      function currentJournal() {
+        return {
+          date: journalDateInput && journalDateInput.value ? journalDateInput.value : localDateString(new Date()),
+          text: journalText ? journalText.value : ''
+        };
+      }
+      if (journalSave) journalSave.addEventListener('click', () => {
+        const data = currentJournal();
+        try {
+          localStorage.setItem(journalStorageKey, JSON.stringify(data));
+          if (journalStatus) journalStatus.textContent = '已保存到当前浏览器 · ' + data.date + '。不会上传到网站服务器。';
+        } catch (error) {
+          if (journalStatus) journalStatus.textContent = '此浏览器不允许本地保存，请使用「导出 .txt」把记录留在自己的设备上。';
+        }
+      });
+      if (journalExport) journalExport.addEventListener('click', () => {
+        const data = currentJournal();
+        const content = '初涵酱 · 成长记录\n日期：' + data.date + '\n\n' + data.text + '\n';
+        try {
+          const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.download = 'chuhan-growth-' + data.date + '.txt';
+          anchor.style.display = 'none';
+          document.body.appendChild(anchor);
+          anchor.click();
+          anchor.remove();
+          window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+          if (journalStatus) journalStatus.textContent = '已生成文本文件。若内置浏览器拦截下载，请复制内容或在系统浏览器中导出。';
+        } catch (error) {
+          if (journalStatus) journalStatus.textContent = '暂时无法导出文件，请复制文本内容备份。';
+        }
+      });
 
       const revealItems = document.querySelectorAll('.reveal');
       if ('IntersectionObserver' in window) {
