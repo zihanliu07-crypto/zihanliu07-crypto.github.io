@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#dff7fb">
-  <meta name="description" content="初涵酱的水蓝色个人海域：音游进度、术力口曲风、cosplay、自设图鉴、节奏工房与个人成长记录。">
+  <meta name="description" content="初涵酱的水蓝色个人海域：音游进度、术力口曲风、cosplay、自设图鉴、四轨 Autoplay 音游、共享 BPM 的节奏工房与个人成长记录。">
   <meta name="color-scheme" content="light dark">
   <meta property="og:type" content="website">
   <meta property="og:title" content="初涵酱 · 一只正在升级的水蓝色小猫">
-  <meta property="og:description" content="音游、术力口、cosplay，还有可以亲手玩的海面节奏台。">
+  <meta property="og:description" content="音游、术力口、cosplay，还有内置音乐、共享 BPM 的四轨 Autoplay 音游与海面节奏工房。">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='28' fill='%23dff7fb'/%3E%3Ctext x='50' y='66' font-size='54' text-anchor='middle' fill='%23167e99'%3E%E7%8C%AB%3C/text%3E%3C/svg%3E">
   <title>初涵酱 · 一只正在升级的水蓝色小猫</title>
   <style>
@@ -286,6 +286,55 @@
     @keyframes unlockIn { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
     .sea-particle { position: fixed; z-index: 30; pointer-events: none; bottom: -2rem; width: var(--bubble-size, 14px); height: var(--bubble-size, 14px); border: 1px solid color-mix(in srgb, var(--blue-deep) 60%, transparent); border-radius: 50%; background: color-mix(in srgb, var(--foam) 70%, transparent); animation: bubbleRise var(--bubble-time, 3.8s) ease-out forwards; }
     @keyframes bubbleRise { 0% { opacity: 0; transform: translateY(0) translateX(0) scale(.65); } 12% { opacity: .9; } 100% { opacity: 0; transform: translateY(-110vh) translateX(var(--bubble-drift, 24px)) scale(1.45); } }
+    /* Autoplay 音游：统一 BPM、流速与节奏工房；Canvas 只在播放时逐帧绘制。 */
+    .rhythm-game-section { background: var(--foam); border-block: 1px solid var(--line); overflow: hidden; }
+    .rhythm-machine { border: 1px solid var(--line); background: var(--sea); box-shadow: var(--shadow); padding: clamp(1rem, 3.3vw, 2rem); }
+    .rhythm-game-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.2rem; margin-bottom: 1.2rem; }
+    .rhythm-game-top h3 { margin: 0 0 .35rem; font-size: clamp(1.35rem, 3vw, 2rem); letter-spacing: -.045em; }
+    .rhythm-game-sub { margin: 0; color: var(--muted); font-size: .84rem; }
+    .rhythm-song-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .75rem; }
+    .rhythm-song-tags span { padding: .22rem .58rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .72rem; font-weight: 800; }
+    .rhythm-song-tags b { color: var(--blue-deep); }
+    .rhythm-game-actions { display: flex; flex-wrap: wrap; gap: .5rem; flex-shrink: 0; }
+    .rhythm-settings { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: .7rem; margin: 1rem 0; }
+    .rhythm-setting { min-width: 0; padding: .8rem 1rem; border: 1px solid var(--line); background: var(--foam); }
+    .rhythm-setting label { display: flex; align-items: baseline; justify-content: space-between; gap: .7rem; font-size: .82rem; font-weight: 850; }
+    .rhythm-setting label b { color: var(--blue-deep); font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+    .rhythm-setting input[type="range"] { width: 100%; margin: .6rem 0 .2rem; accent-color: var(--blue-deep); cursor: pointer; }
+    .rhythm-setting input[type="range"]:disabled { cursor: not-allowed; opacity: .6; }
+    .autoplay-note { display: flex; align-items: center; gap: .85rem; }
+    .autoplay-pill { flex: 0 0 auto; padding: .4rem .65rem; border-radius: 999px; background: var(--ice); color: var(--blue-deep); font-size: .72rem; font-weight: 1000; letter-spacing: .08em; }
+    .autoplay-note p { margin: 0; color: var(--muted); font-size: .82rem; }
+    .rhythm-lab-link { display: inline-flex; margin-top: .4rem; color: var(--blue-deep); font-size: .78rem; font-weight: 900; text-decoration: none; text-underline-offset: .2em; }
+    .rhythm-lab-link:hover { text-decoration: underline; }
+    .rhythm-hud { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .55rem; margin: 1.1rem 0; }
+    .rhythm-stat { min-width: 0; padding: .62rem .8rem; border: 1px solid var(--line); background: var(--foam); }
+    .rhythm-stat span { display: block; color: var(--muted); font-size: .68rem; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; }
+    .rhythm-stat b { display: block; color: var(--blue-deep); font-size: clamp(1.15rem, 3vw, 1.75rem); line-height: 1.3; font-variant-numeric: tabular-nums; }
+    .rhythm-field { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: .8rem; background: var(--foam); }
+    #rhythmCanvas { display: block; width: 100%; height: 330px; }
+    .rhythm-feedback { min-height: 2rem; display: flex; align-items: center; justify-content: space-between; gap: .8rem; margin-top: .85rem; }
+    .rhythm-feedback strong { color: var(--blue-deep); font-size: 1rem; }
+    .rhythm-feedback span { color: var(--muted); font-size: .78rem; text-align: right; }
+    .rhythm-game-status { min-height: 1.5rem; margin: .6rem 0 0; color: var(--blue-deep); font-size: .86rem; font-weight: 800; }
+    .rhythm-game-foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .55rem 1rem; margin-top: .8rem; color: var(--muted); font-size: .76rem; }
+    @media (max-width: 800px) {
+      .rhythm-game-top { flex-direction: column; align-items: stretch; }
+      .rhythm-game-actions { align-self: flex-start; }
+    }
+    @media (max-width: 560px) {
+      #rhythmCanvas { height: 270px; }
+      .rhythm-settings { grid-template-columns: minmax(0, 1fr); }
+      .rhythm-hud { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .42rem; }
+      .rhythm-stat { padding: .5rem .65rem; }
+      .rhythm-feedback { align-items: flex-start; flex-direction: column; gap: .1rem; }
+      .rhythm-feedback span { text-align: left; }
+      .rhythm-game-actions .pill-button, .rhythm-game-actions .plain-button { padding: .48rem .68rem; font-size: .78rem; }
+      .autoplay-note { align-items: flex-start; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .rhythm-game-actions button { transition: none; }
+    }
     .rhythm-studio { background: color-mix(in srgb, var(--ice) 35%, var(--sea)); border-block: 1px solid var(--line); overflow: hidden; }
     .sequencer { position: relative; padding: clamp(1.1rem, 3.5vw, 2.4rem); border: 1px solid var(--line); background: var(--foam); box-shadow: var(--shadow); }
     .sequencer::before { content: "〰"; position: absolute; right: 1.2rem; top: .4rem; color: color-mix(in srgb, var(--blue) 25%, transparent); font-size: 4rem; line-height: 1; transform: rotate(-8deg); pointer-events: none; }
@@ -610,6 +659,7 @@
         <a href="#otaku">二次元频道</a>
         <a href="#rhythm-profile">音游档案</a>
         <a href="#play">互动一下</a>
+        <a href="#rhythm-game">音游模拟</a>
         <a href="#studio">节奏工房</a>
         <a href="#roadmap">技术路线图</a>
         <a href="#projects">项目与踩坑</a>
@@ -811,7 +861,7 @@
       <div class="wrap">
         <div class="section-head reveal">
           <div class="section-index">04 / PLAY <button class="star-find" type="button" data-star="play" aria-label="收集互动区域的海星" title="这里藏着一颗海星">✦</button></div>
-          <div><h2>别只看主页，<br>来动一下手。</h2><p class="section-intro">两个很轻的小玩法：一个测试你能在倒计时里点多少下，一个是猜数字。它们都只在当前页面运行。</p></div>
+          <div><h2>别只看主页，<br>来动一下手。</h2><p class="section-intro">先热身、再挑战：可以测十秒点击数、玩猜数字，也可以观看四轨 Autoplay 谱面，谱面流速可调，BPM 与节奏工房联动。</p></div>
         </div>
         <div class="playground reveal">
           <section class="play-panel" aria-labelledby="tapTitle">
@@ -841,15 +891,61 @@
       </div>
     </section>
 
+    <section class="section rhythm-game-section" id="rhythm-game">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="section-index">05 / PLAYABLE RHYTHM</div>
+          <div><h2>跟着海潮，打出你的 COMBO。</h2><p class="section-intro">一段专门为这个页面制作的短节奏曲。音符、鼓点和下落谱面共用同一条音频时钟，音乐由浏览器本地合成，不加载外部音频或游戏框架。</p></div>
+        </div>
+        <div class="rhythm-machine reveal" id="rhythmMachine">
+          <div class="rhythm-game-top">
+            <div>
+              <p class="tiny-label">BLUE TIDE / AUTOPLAY MIX</p>
+              <h3>海风拍点 · Original Synth Track</h3>
+              <p class="rhythm-game-sub">四轨自动演奏 · Lead 旋律与自选鼓点共同生成谱面</p>
+              <div class="rhythm-song-tags"><span><b id="rhythmBpmTag">112 BPM</b> · 同步节奏工房</span><span>4-LANE</span><span>本地合成音乐</span><span>无外部音频</span><span id="rhythmChartBreakdown">Lead 37 + Drum 64 = 101 NOTES</span></div>
+            </div>
+            <div class="rhythm-game-actions">
+              <button class="pill-button primary" id="rhythmStart" type="button">▶ 开始 Autoplay</button>
+              <button class="plain-button" id="rhythmStop" type="button" disabled>■ 停止</button>
+            </div>
+          </div>
+          <div class="rhythm-settings">
+            <div class="rhythm-setting">
+              <label for="scrollSpeedRange"><span>谱面流速</span><b id="scrollSpeedValue">1.00×</b></label>
+              <input id="scrollSpeedRange" type="range" min="0.65" max="1.80" value="1" step="0.05" aria-describedby="scrollSpeedHint">
+              <div class="tempo-scale" id="scrollSpeedHint"><span>舒缓</span><span>高速</span></div>
+            </div>
+            <div class="rhythm-setting autoplay-note">
+              <span class="autoplay-pill">AUTOPLAY</span>
+              <div><p><strong>自动演奏模式</strong></p><p>Lead 旋律提供基础音符，节奏工房每个开启的鼓点都会加入谱面。改变鼓点会改变音符数量与分布；播放中修改在下一局生效。</p><a class="rhythm-lab-link" href="#studio">前往节奏工房调整 BPM 与鼓点 ↓</a></div>
+            </div>
+          </div>
+          <div class="rhythm-hud" aria-label="Autoplay 播放状态">
+            <div class="rhythm-stat"><span>SCORE</span><b id="rhythmScore">000000</b></div>
+            <div class="rhythm-stat"><span>COMBO</span><b id="rhythmCombo">0</b></div>
+            <div class="rhythm-stat"><span>AUTO NOTES</span><b id="rhythmProgress">0 / 0</b></div>
+            <div class="rhythm-stat"><span>TRACK LENGTH</span><b id="rhythmLength">17.1s</b></div>
+          </div>
+          <div class="rhythm-field">
+            <canvas id="rhythmCanvas" role="img" aria-label="四轨自动演奏谱面。音符随节奏落向判定线，由 Autoplay 自动命中。">当前浏览器不支持 Canvas，但不影响浏览其他内容。</canvas>
+          </div>
+          <div class="rhythm-feedback"><strong id="rhythmLastJudge">AUTOPLAY READY</strong><span id="rhythmJudgeCounts">自动命中 0 / 0 个音符</span></div>
+          <p class="rhythm-game-status" id="rhythmGameStatus" aria-live="polite">点击「开始 Autoplay」播放合成音乐与自动谱面。可以在下方节奏工房编排鼓点，并调整 BPM；谱面流速可独立设置，每次开始都会随机编排音符轨道，音乐与音符总数保持不变。</p>
+          <div class="rhythm-game-foot"><span>Lead 音符 + 鼓点触发音符 · 数量随编排变化</span><span>乐曲固定 8 小节；播放与绘制仅在 Autoplay 期间启动。</span></div>
+        </div>
+      </div>
+    </section>
+
     <section class="section rhythm-studio" id="studio">
       <div class="wrap">
         <div class="section-head reveal">
-          <div class="section-index">05 / RHYTHM LAB</div>
-          <div><h2>海面节奏工房。</h2><p class="section-intro">自己点亮节拍格子，组合一段小节奏。声音由浏览器即时合成，不加载音频文件；按下播放后才会启用音频。</p></div>
+          <div class="section-index">06 / RHYTHM LAB</div>
+          <div><h2>海面节奏工房。</h2><p class="section-intro">自己点亮节拍格子，组合一段小节奏。这里的 BPM 会同步控制上方 Autoplay 曲目；每个开启的低音、拍手和碎拍，都会按八小节循环参与谱面生成。改动鼓点后，音游会即时更新下一局的谱面预览。声音由浏览器即时合成，不加载音频文件。</p></div>
         </div>
         <div class="sequencer reveal">
           <div class="sequencer-top">
-            <div><p class="tiny-label">8-STEP SEQUENCER</p><h3>把海浪排成节奏。</h3><p class="sequencer-hint">点格子开关音符 · 可以用键盘 Tab 逐格操作</p></div>
+            <div><p class="tiny-label">8-STEP SEQUENCER</p><h3>把海浪排成节奏。</h3><p class="sequencer-hint">八格鼓点同时影响伴奏和谱面 · BPM 与上方曲目共享</p></div>
             <div class="tempo-box"><label for="tempoRange">速度 <b id="tempoValue">112</b> BPM</label><input id="tempoRange" type="range" min="70" max="160" value="112"><div class="tempo-scale"><span>慢一点</span><span>快一点</span></div></div>
           </div>
           <div class="step-ruler" aria-hidden="true"><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span><span>08</span></div>
@@ -865,7 +961,7 @@
     <section class="section roadmap-section" id="roadmap">
       <div class="wrap">
         <div class="section-head reveal">
-          <div class="section-index">06 / ROADMAP</div>
+          <div class="section-index">07 / ROADMAP</div>
           <div><h2>从编程基础，走向生成式 AI。</h2><p class="section-intro">这张路线图记录了我希望逐步走通的技术路径：从眼前的 C / C++ 基础出发，积累工程实践，补齐数学与机器学习知识，最终走向开源生成式人工智能研究。</p></div>
         </div>
 
@@ -972,7 +1068,7 @@
     <section class="section growth-log-section" id="growth-log">
       <div class="wrap">
         <div class="section-head reveal">
-          <div class="section-index">07 / GROWTH LOG</div>
+          <div class="section-index">08 / GROWTH LOG</div>
           <div><h2>给未来的自己留个记录。</h2><p class="section-intro">这里留给学习过程中的真实记录：一次练习的感受、一个刚弄懂的知识点，或某个值得回看的思路。</p></div>
         </div>
         <section class="journal-board journal-board-standalone reveal" aria-labelledby="journalTitle">
@@ -992,7 +1088,7 @@
     <section class="section path-section" id="projects">
       <div class="wrap">
         <div class="section-head reveal">
-          <div class="section-index">08 / BUILD LOG <button class="star-find" type="button" data-star="build" aria-label="收集项目与踩坑区域的海星" title="这里藏着一颗海星">✦</button></div>
+          <div class="section-index">09 / BUILD LOG <button class="star-find" type="button" data-star="build" aria-label="收集项目与踩坑区域的海星" title="这里藏着一颗海星">✦</button></div>
           <div><h2>项目先落地，踩坑也算经验。</h2><p class="section-intro">路线图写的是想走向哪里；这里留下已经做过的项目，以及真正遇到过的错误。它们提醒我，技术能力是在一次次运行、失败和修正里积累的。</p></div>
         </div>
         <div class="path-notes reveal">
@@ -1021,7 +1117,7 @@
     <section class="section" id="thoughts">
       <div class="wrap">
         <div class="section-head reveal">
-          <div class="section-index">09 / UNDER THE SURFACE <button class="star-find" type="button" data-star="thoughts" aria-label="收集思考区域的海星" title="这里藏着一颗海星">✦</button></div>
+          <div class="section-index">10 / UNDER THE SURFACE <button class="star-find" type="button" data-star="thoughts" aria-label="收集思考区域的海星" title="这里藏着一颗海星">✦</button></div>
           <div><h2>可爱是外观，<br>判断要有自己的依据。</h2><p class="section-intro">这一部分不用写得很响亮，但它确实是我做选择时会带着的东西。</p></div>
         </div>
         <div class="thinking reveal">
@@ -1039,7 +1135,7 @@
       <div class="wrap">
         <div class="contact-grid">
           <div class="reveal">
-            <p class="section-index">09 / SIGNAL</p>
+            <p class="section-index">11 / SIGNAL</p>
             <h2>信号在这里。<br>有缘就来打个招呼。</h2>
             <p class="section-intro">音游、术力口、cosplay、技术路线——有共同话题的话，欢迎来找我。</p>
             <p class="tiny-label" style="margin-top:2rem;">PROFILE NOTE</p>
@@ -1604,6 +1700,8 @@
             cell.setAttribute('aria-pressed', String(Boolean(track.pattern[index])));
             cell.setAttribute('aria-label', track.label + '，第 ' + (index + 1) + ' 步，' + (track.pattern[index] ? '开启' : '关闭'));
             if (track.pattern[index]) popSpark(cell.getBoundingClientRect().left + cell.offsetWidth / 2, cell.getBoundingClientRect().top, '♪');
+            const chartCounts = refreshRhythmChartPreview();
+            if (!rhythmActive) rhythmGameStatus.textContent = '谱面预览已更新：Lead ' + chartCounts.lead + ' + 鼓点 ' + chartCounts.drums + ' = ' + chartCounts.total + ' 个音符。';
           });
         });
       });
@@ -1675,7 +1773,7 @@
           seqPlaying = true;
           seqPlay.textContent = '■ 停止节奏';
           seqPlay.setAttribute('aria-pressed', 'true');
-          seqStatus.textContent = '播放中 · ' + tempoRange.value + ' BPM。点格子可以实时改变下一轮节奏。';
+          seqStatus.textContent = '播放中 · ' + tempoRange.value + ' BPM。格子调整会用于下一次 Autoplay。';
           seqStep = 0;
           tickSequence();
           seqTimer = window.setInterval(tickSequence, stepDuration());
@@ -1702,7 +1800,9 @@
           const track = seqTracks[button.dataset.track];
           button.setAttribute('aria-label', track.label + '，第 ' + (Number(button.dataset.step) + 1) + ' 步，' + (on ? '开启' : '关闭'));
         });
-        seqStatus.textContent = '随机节奏已生成。听听看，或继续手动调整。';
+        const chartCounts = refreshRhythmChartPreview();
+        seqStatus.textContent = '已生成随机鼓点。下一局谱面：Lead ' + chartCounts.lead + ' + 鼓点 ' + chartCounts.drums + ' = ' + chartCounts.total + ' 个音符。';
+        if (!rhythmActive) rhythmGameStatus.textContent = '随机编排已更新谱面预览：共 ' + chartCounts.total + ' 个音符。';
         popSpark(seqRandom.getBoundingClientRect().left + seqRandom.offsetWidth / 2, seqRandom.getBoundingClientRect().top, '♪');
       });
       seqClear.addEventListener('click', () => {
@@ -1711,8 +1811,504 @@
           button.setAttribute('aria-pressed', 'false');
           button.setAttribute('aria-label', seqTracks[button.dataset.track].label + '，第 ' + (Number(button.dataset.step) + 1) + ' 步，关闭');
         });
-        seqStatus.textContent = '格子已清空。点亮任何一步，再按播放就会有声音。';
+        const chartCounts = refreshRhythmChartPreview();
+        seqStatus.textContent = '鼓组已清空，伴奏鼓点静音；Lead 旋律仍保留。当前谱面共 ' + chartCounts.total + ' 个音符。';
+        if (!rhythmActive) rhythmGameStatus.textContent = '鼓组已清空，当前预览只保留 Lead 旋律，共 ' + chartCounts.lead + ' 个音符。';
       });
+      // 4. 四轨 Autoplay 音游：与节奏工房共享 BPM 与三轨节奏编排。
+      const rhythmCanvas = document.getElementById('rhythmCanvas');
+      const rhythmCanvasContext = rhythmCanvas && rhythmCanvas.getContext ? rhythmCanvas.getContext('2d') : null;
+      const rhythmStartButton = document.getElementById('rhythmStart');
+      const rhythmStopButton = document.getElementById('rhythmStop');
+      const rhythmScoreText = document.getElementById('rhythmScore');
+      const rhythmComboText = document.getElementById('rhythmCombo');
+      const rhythmProgressText = document.getElementById('rhythmProgress');
+      const rhythmLengthText = document.getElementById('rhythmLength');
+      const rhythmLastJudge = document.getElementById('rhythmLastJudge');
+      const rhythmJudgeCounts = document.getElementById('rhythmJudgeCounts');
+      const rhythmGameStatus = document.getElementById('rhythmGameStatus');
+      const rhythmBpmTag = document.getElementById('rhythmBpmTag');
+      const rhythmChartBreakdown = document.getElementById('rhythmChartBreakdown');
+      const scrollSpeedRange = document.getElementById('scrollSpeedRange');
+      const scrollSpeedValue = document.getElementById('scrollSpeedValue');
+      const RHYTHM_BASE_APPROACH = 1.65;
+      const RHYTHM_FREQUENCIES = [523.25, 587.33, 698.46, 783.99];
+      // Lead 的 64 个八分音符时隙构成固定旋律；-1 是休止，其余数字是旋律音高/基础轨道。
+      // 最终谱面会在这些 Lead 音符之外，叠加节奏工房每个启用鼓点所触发的音符。
+      const RHYTHM_LEAD_PATTERN = [
+        0,-1,1,-1, 2,-1,3,-1, 1,-1,2,-1, 0,-1,3,-1,
+        2,-1,1,3, -1,2,-1,0, 1,-1,3,-1, 2,1,-1,0,
+        3,-1,2,-1, 1,-1,0,2, -1,3,-1,1, 2,-1,0,-1,
+        1,3,-1,2, 0,-1,1,-1, 3,-1,2,0, -1,1,-1,3
+      ];
+      const RHYTHM_TOTAL_SLOTS = RHYTHM_LEAD_PATTERN.length;
+      const RHYTHM_TOTAL_BEATS = RHYTHM_TOTAL_SLOTS / 2;
+      function formatRhythmLength(bpm) { return (1920 / bpm).toFixed(1) + 's'; }
+      let rhythmActive = false;
+      let rhythmFrameId = null;
+      let rhythmSongGain = null;
+      const rhythmScheduledSources = new Set();
+      let rhythmSongStart = 0;
+      let rhythmSongEnd = 0;
+      let rhythmRunBpm = Number(tempoRange.value) || 112;
+      rhythmLengthText.textContent = formatRhythmLength(rhythmRunBpm);
+      let rhythmBeat = 60 / rhythmRunBpm;
+      let rhythmScrollSpeed = Number(scrollSpeedRange.value) || 1;
+      let rhythmApproach = RHYTHM_BASE_APPROACH / rhythmScrollSpeed;
+      let rhythmNotes = [];
+      let rhythmScore = 0;
+      let rhythmCombo = 0;
+      let rhythmMaxCombo = 0;
+      let rhythmJudgements = { PERFECT: 0, GREAT: 0, GOOD: 0, MISS: 0 };
+      let rhythmFeedback = { text: 'AUTOPLAY READY', until: 0, lane: -1, good: true };
+      let rhythmCanvasWidth = 0;
+      let rhythmCanvasHeight = 0;
+      const RHYTHM_LANE_COLORS = ['#55c9dd', '#ff8d82', '#aaa0f0', '#edc85f'];
+      scrollSpeedValue.textContent = rhythmScrollSpeed.toFixed(2) + '×';
+      rhythmBpmTag.textContent = rhythmRunBpm + ' BPM';
+      rhythmProgressText.textContent = '0 / 0';
+      rhythmJudgeCounts.textContent = '自动命中 0 / 0 个音符';
+
+      function resizeRhythmCanvas() {
+        if (!rhythmCanvas || !rhythmCanvasContext) return;
+        const rect = rhythmCanvas.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        rhythmCanvasWidth = rect.width;
+        rhythmCanvasHeight = rect.height;
+        // 限制 DPR，控制手机上的 Canvas 内存与填充开销。
+        const dpr = Math.min(1.5, Math.max(1, window.devicePixelRatio || 1));
+        const pixelWidth = Math.round(rect.width * dpr);
+        const pixelHeight = Math.round(rect.height * dpr);
+        if (rhythmCanvas.width !== pixelWidth || rhythmCanvas.height !== pixelHeight) {
+          rhythmCanvas.width = pixelWidth;
+          rhythmCanvas.height = pixelHeight;
+        }
+        rhythmCanvasContext.setTransform(dpr, 0, 0, dpr, 0, 0);
+        drawRhythmFrame(audioContext ? audioContext.currentTime : 0, true);
+      }
+
+      function roundedRectPath(ctx, x, y, width, height, radius) {
+        const r = Math.min(radius, width / 2, height / 2);
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + width, y, x + width, y + height, r);
+        ctx.arcTo(x + width, y + height, x, y + height, r);
+        ctx.arcTo(x, y + height, x, y, r);
+        ctx.arcTo(x, y, x + width, y + height, r);
+        ctx.closePath();
+      }
+
+      function drawRhythmFrame(now, staticOnly = false) {
+        if (!rhythmCanvasContext || !rhythmCanvasWidth || !rhythmCanvasHeight) return;
+        const ctx = rhythmCanvasContext;
+        const w = rhythmCanvasWidth;
+        const h = rhythmCanvasHeight;
+        const dark = body.classList.contains('night');
+        const ink = dark ? '#e5faff' : '#173b4b';
+        const muted = dark ? '#a8cbd7' : '#587b88';
+        const field = dark ? '#173e52' : '#f7feff';
+        const laneTint = dark ? 'rgba(105,213,232,.065)' : 'rgba(85,201,221,.085)';
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = field;
+        ctx.fillRect(0, 0, w, h);
+        const laneWidth = w / 4;
+        const spawnY = h * .075;
+        const hitY = h * .80;
+        // 轻量刻度线与四色轨道，避免阴影滤镜和逐 DOM 动画。
+        for (let lane = 0; lane < 4; lane += 1) {
+          ctx.fillStyle = laneTint;
+          ctx.fillRect(lane * laneWidth, 0, laneWidth, h);
+          if (lane > 0) {
+            ctx.beginPath();
+            ctx.strokeStyle = dark ? 'rgba(187,235,246,.14)' : 'rgba(23,91,111,.13)';
+            ctx.lineWidth = 1;
+            ctx.moveTo(lane * laneWidth, 0);
+            ctx.lineTo(lane * laneWidth, h);
+            ctx.stroke();
+          }
+          ctx.fillStyle = muted;
+          ctx.font = '850 10px system-ui, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('LANE 0' + (lane + 1), lane * laneWidth + laneWidth / 2, 18);
+        }
+        // 判定线；Autoplay 自动在音频时钟到点时命中。
+        ctx.strokeStyle = dark ? 'rgba(105,213,232,.95)' : 'rgba(22,126,153,.86)';
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(0, hitY); ctx.lineTo(w, hitY); ctx.stroke();
+        for (let lane = 0; lane < 4; lane += 1) {
+          const cx = lane * laneWidth + laneWidth / 2;
+          ctx.fillStyle = RHYTHM_LANE_COLORS[lane] + '32';
+          roundedRectPath(ctx, cx - laneWidth * .31, hitY - 12, laneWidth * .62, 24, 7);
+          ctx.fill();
+          ctx.strokeStyle = RHYTHM_LANE_COLORS[lane];
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
+        if (rhythmActive) {
+          const travel = hitY - spawnY;
+          const noteWidth = Math.min(48, laneWidth * .60);
+          const noteHeight = Math.max(11, Math.min(16, laneWidth * .20));
+          for (const note of rhythmNotes) {
+            if (note.judged) continue;
+            const until = note.time - now;
+            const y = hitY - (until / rhythmApproach) * travel;
+            if (y < spawnY - noteHeight || y > h + noteHeight) continue;
+            const x = note.lane * laneWidth + (laneWidth - noteWidth) / 2;
+            ctx.fillStyle = RHYTHM_LANE_COLORS[note.lane];
+            if (note.kind === 'kick') {
+              ctx.beginPath();
+              ctx.arc(x + noteWidth / 2, y, noteHeight * .68, 0, Math.PI * 2);
+              ctx.fill();
+            } else if (note.kind === 'snare') {
+              ctx.beginPath();
+              ctx.moveTo(x + noteWidth / 2, y - noteHeight * .8);
+              ctx.lineTo(x + noteWidth / 2 + noteHeight * .8, y);
+              ctx.lineTo(x + noteWidth / 2, y + noteHeight * .8);
+              ctx.lineTo(x + noteWidth / 2 - noteHeight * .8, y);
+              ctx.closePath();
+              ctx.fill();
+            } else if (note.kind === 'hat') {
+              roundedRectPath(ctx, x + noteWidth * .12, y - noteHeight * .22, noteWidth * .76, noteHeight * .44, 3);
+              ctx.fill();
+            } else {
+              roundedRectPath(ctx, x, y - noteHeight / 2, noteWidth, noteHeight, Math.min(7, noteHeight / 2));
+              ctx.fill();
+              ctx.fillStyle = 'rgba(255,255,255,.55)';
+              roundedRectPath(ctx, x + 3, y - noteHeight / 2 + 2, Math.max(2, noteWidth - 6), 2, 1);
+              ctx.fill();
+            }
+          }
+          const elapsed = Math.max(0, now - rhythmSongStart);
+          const total = RHYTHM_TOTAL_SLOTS * rhythmBeat / 2;
+          const progress = Math.min(1, elapsed / total);
+          ctx.fillStyle = dark ? 'rgba(105,213,232,.25)' : 'rgba(85,201,221,.26)';
+          ctx.fillRect(0, h - 3, w * progress, 3);
+          // 细小的 AUTO 状态标识，不遮挡谱面。
+          ctx.fillStyle = muted;
+          ctx.textAlign = 'right';
+          ctx.font = '850 10px system-ui, sans-serif';
+          ctx.fillText('AUTO PLAY  ·  ' + rhythmRunBpm + ' BPM', w - 10, 18);
+        } else {
+          ctx.fillStyle = ink;
+          ctx.textAlign = 'center';
+          ctx.font = '950 20px system-ui, sans-serif';
+          const title = rhythmScore > 0 ? 'AUTOPLAY COMPLETE' : 'READY TO DRIFT';
+          ctx.fillText(title, w / 2, h * .42);
+          ctx.fillStyle = muted;
+          ctx.font = '650 12px system-ui, sans-serif';
+          ctx.fillText('节奏工房控制 BPM  ·  滑杆控制谱面流速', w / 2, h * .42 + 25);
+        }
+        if (rhythmFeedback.until > now && rhythmFeedback.text) {
+          const alpha = Math.min(1, (rhythmFeedback.until - now) / .18);
+          ctx.globalAlpha = alpha;
+          ctx.fillStyle = rhythmFeedback.good ? ink : '#e27b80';
+          ctx.textAlign = 'center';
+          ctx.font = '950 20px system-ui, sans-serif';
+          ctx.fillText(rhythmFeedback.text, w / 2, h * .34);
+          ctx.globalAlpha = 1;
+        }
+      }
+
+      function updateRhythmHud() {
+        const hitCount = rhythmJudgements.PERFECT + rhythmJudgements.GREAT + rhythmJudgements.GOOD + rhythmJudgements.MISS;
+        rhythmScoreText.textContent = String(rhythmScore).padStart(6, '0');
+        rhythmComboText.textContent = String(rhythmCombo);
+        const totalNotes = rhythmNotes.length;
+        rhythmProgressText.textContent = hitCount + ' / ' + totalNotes;
+        rhythmJudgeCounts.textContent = '自动命中 ' + hitCount + ' / ' + totalNotes + ' 个音符';
+      }
+
+      function setRhythmFeedback(text, now, lane = -1, good = true) {
+        rhythmFeedback = { text, until: now + .42, lane, good };
+        rhythmLastJudge.textContent = text;
+      }
+
+      function recordAutoplayHit(note, now) {
+        if (note.judged) return;
+        note.judged = true;
+        rhythmJudgements.PERFECT += 1;
+        rhythmScore += 1000;
+        rhythmCombo += 1;
+        rhythmMaxCombo = Math.max(rhythmMaxCombo, rhythmCombo);
+        setRhythmFeedback('PERFECT', now, note.lane, true);
+        updateRhythmHud();
+      }
+
+      function processAutoplayNotes(now) {
+        // 自动命中与伴奏使用同一个 AudioContext 时间轴，不依赖 setTimeout 猜时机。
+        for (const note of rhythmNotes) {
+          if (!note.judged && now >= note.time) recordAutoplayHit(note, now);
+        }
+      }
+
+      function gameToneAt(ctx, time, frequency, duration, wave, volume, destination) {
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+        oscillator.type = wave || 'triangle';
+        oscillator.frequency.setValueAtTime(frequency, time);
+        gain.gain.setValueAtTime(.0001, time);
+        gain.gain.exponentialRampToValueAtTime(Math.max(.0002, volume), time + .012);
+        gain.gain.exponentialRampToValueAtTime(.0001, time + duration);
+        oscillator.connect(gain); gain.connect(destination);
+        rhythmScheduledSources.add(oscillator);
+        oscillator.onended = () => rhythmScheduledSources.delete(oscillator);
+        oscillator.start(time); oscillator.stop(time + duration + .025);
+      }
+
+      function gameKickAt(ctx, time, destination, volume = .30) {
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(125, time);
+        oscillator.frequency.exponentialRampToValueAtTime(43, time + .14);
+        gain.gain.setValueAtTime(volume, time);
+        gain.gain.exponentialRampToValueAtTime(.0001, time + .2);
+        oscillator.connect(gain); gain.connect(destination);
+        rhythmScheduledSources.add(oscillator);
+        oscillator.onended = () => rhythmScheduledSources.delete(oscillator);
+        oscillator.start(time); oscillator.stop(time + .22);
+      }
+
+      function gameNoiseAt(ctx, time, destination, kind) {
+        if (!seqNoiseBuffer) return;
+        const source = ctx.createBufferSource();
+        const filter = ctx.createBiquadFilter();
+        const gain = ctx.createGain();
+        source.buffer = seqNoiseBuffer;
+        filter.type = kind === 'hat' ? 'highpass' : 'bandpass';
+        filter.frequency.value = kind === 'hat' ? 6800 : 1900;
+        const volume = kind === 'hat' ? .06 : .12;
+        const duration = kind === 'hat' ? .045 : .11;
+        gain.gain.setValueAtTime(volume, time);
+        gain.gain.exponentialRampToValueAtTime(.0001, time + duration);
+        source.connect(filter); filter.connect(gain); gain.connect(destination);
+        rhythmScheduledSources.add(source);
+        source.onended = () => rhythmScheduledSources.delete(source);
+        source.start(time); source.stop(time + duration + .01);
+      }
+
+      function shuffleRhythmItems(items) {
+        // Fisher–Yates 原地洗牌；只影响视觉轨道，不参与音频调度。
+        const shuffled = items.slice();
+        for (let i = shuffled.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+      }
+
+      function buildRhythmChart(startAt, subBeat, randomizeLanes = true) {
+        // 生成 8 小节谱面：Lead 使用预设旋律，鼓点编排每循环一小节并重复 8 次。
+        // 随机化只重新分配每个时隙的轨道与绘制顺序；事件种类、音高来源、采音时间和总数保持不变。
+        const notes = [];
+        const allLanes = [0, 1, 2, 3];
+        for (let slot = 0; slot < RHYTHM_TOTAL_SLOTS; slot += 1) {
+          const step = slot % 8;
+          const events = [];
+          if (seqTracks.kick.pattern[step]) events.push({ kind: 'kick' });
+          if (seqTracks.snare.pattern[step]) events.push({ kind: 'snare' });
+          if (seqTracks.hat.pattern[step]) events.push({ kind: 'hat' });
+          const leadPitchLane = RHYTHM_LEAD_PATTERN[slot];
+          if (leadPitchLane >= 0) events.push({ kind: 'lead', pitchLane: leadPitchLane });
+
+          // 一个时隙最多四个声部。随机打乱声部与轨道，确保同一时刻不会挤在同一轨。
+          const eventOrder = randomizeLanes ? shuffleRhythmItems(events) : events;
+          const laneOrder = randomizeLanes ? shuffleRhythmItems(allLanes) : allLanes;
+          eventOrder.forEach((event, index) => {
+            notes.push({
+              kind: event.kind,
+              lane: laneOrder[index],
+              pitchLane: event.pitchLane,
+              slot,
+              time: startAt + slot * subBeat,
+              judged: false
+            });
+          });
+        }
+        // 保持时间顺序，便于自动判定；同一时刻的轨道顺序也随机化后的结果一致。
+        return notes.sort((a, b) => a.time - b.time || a.lane - b.lane);
+      }
+
+      function countCurrentChartSources(notes) {
+        let lead = 0;
+        let drums = 0;
+        notes.forEach(note => { if (note.kind === 'lead') lead += 1; else drums += 1; });
+        return { lead, drums, total: notes.length };
+      }
+
+      function refreshRhythmChartPreview() {
+        const bpmForPreview = Number(tempoRange.value) || 112;
+        const preview = buildRhythmChart(0, 30 / bpmForPreview);
+        const counts = countCurrentChartSources(preview);
+        if (!rhythmActive) {
+          rhythmNotes = preview;
+          rhythmScore = 0;
+          rhythmCombo = 0;
+          rhythmMaxCombo = 0;
+          rhythmJudgements = { PERFECT: 0, GREAT: 0, GOOD: 0, MISS: 0 };
+          rhythmLastJudge.textContent = 'AUTOPLAY READY';
+          updateRhythmHud();
+          drawRhythmFrame(audioContext ? audioContext.currentTime : 0, true);
+        }
+        if (rhythmChartBreakdown) {
+          const currentTotal = rhythmActive ? rhythmNotes.length : counts.total;
+          rhythmChartBreakdown.textContent = 'LEAD ' + counts.lead + ' + DRUM ' + counts.drums + ' = ' + counts.total + ' NOTES';
+          rhythmChartBreakdown.title = rhythmActive
+            ? '本局 ' + currentTotal + ' 个音符；当前编排会生成下一局 ' + counts.total + ' 个音符。'
+            : 'Lead 旋律 ' + counts.lead + ' 个 + 鼓点触发 ' + counts.drums + ' 个。';
+        }
+        return counts;
+      }
+
+      function scheduleRhythmSong(ctx, startAt, destination, notes, beatDuration) {
+        // 节奏工房每个开启的鼓点都发声；同一事件也对应一颗谱面 note。
+        const subBeat = beatDuration / 2;
+        for (let slot = 0; slot < RHYTHM_TOTAL_SLOTS; slot += 1) {
+          const time = startAt + slot * subBeat;
+          const step = slot % 8;
+          if (seqTracks.kick.pattern[step]) gameKickAt(ctx, time, destination, step === 0 ? .31 : .22);
+          if (seqTracks.snare.pattern[step]) gameNoiseAt(ctx, time, destination, 'snare');
+          if (seqTracks.hat.pattern[step]) gameNoiseAt(ctx, time, destination, 'hat');
+        }
+        // 低音线独立于谱面密度；Lead 音符使用预设音高，鼓点 note 则由上方鼓组声部发声。
+        const roots = [130.81, 174.61, 196.00, 146.83, 130.81, 174.61, 220.00, 146.83];
+        for (let beat = 0; beat < RHYTHM_TOTAL_BEATS; beat += 4) {
+          const root = roots[Math.floor(beat / 4) % roots.length];
+          gameToneAt(ctx, startAt + beat * beatDuration, root, beatDuration * 3.5, 'sine', .055, destination);
+        }
+        notes.forEach(note => {
+          if (note.kind === 'lead') {
+            gameToneAt(ctx, note.time, RHYTHM_FREQUENCIES[note.pitchLane], .14, 'triangle', .15, destination);
+          }
+        });
+      }
+
+      function stopRhythmAudio(fade = true) {
+        if (!audioContext) return;
+        const now = audioContext.currentTime;
+        rhythmScheduledSources.forEach(source => {
+          try { source.stop(now); } catch (error) { /* 已结束的音源无需再次停止 */ }
+        });
+        rhythmScheduledSources.clear();
+        if (!rhythmSongGain) return;
+        try {
+          rhythmSongGain.gain.cancelScheduledValues(now);
+          rhythmSongGain.gain.setValueAtTime(Math.max(.0001, rhythmSongGain.gain.value), now);
+          if (fade) rhythmSongGain.gain.linearRampToValueAtTime(.0001, now + .035);
+        } catch (error) { /* 某些内置 WebView 关闭音频时可能拒绝更新参数 */ }
+      }
+
+      function finishRhythmGame() {
+        rhythmActive = false;
+        if (rhythmFrameId !== null) cancelAnimationFrame(rhythmFrameId);
+        rhythmFrameId = null;
+        rhythmStartButton.disabled = false;
+        rhythmStartButton.textContent = '↻ 再播一次';
+        rhythmStopButton.disabled = true;
+        scrollSpeedRange.disabled = false;
+        rhythmGameStatus.textContent = 'Autoplay 完成！全曲 ' + rhythmCombo + ' COMBO，得分 ' + rhythmScore + '。可以调整流速或 BPM 再播一遍。';
+        rhythmLastJudge.textContent = 'AUTOPLAY COMPLETE · MAX ' + rhythmMaxCombo;
+        drawRhythmFrame(audioContext ? audioContext.currentTime : 0, true);
+      }
+
+      function stopRhythmGame(message = 'Autoplay 已停止。调整流速或节奏工房后，可以重新播放。') {
+        rhythmActive = false;
+        if (rhythmFrameId !== null) cancelAnimationFrame(rhythmFrameId);
+        rhythmFrameId = null;
+        stopRhythmAudio(true);
+        rhythmStartButton.disabled = false;
+        rhythmStartButton.textContent = '▶ 开始 Autoplay';
+        rhythmStopButton.disabled = true;
+        scrollSpeedRange.disabled = false;
+        rhythmGameStatus.textContent = message;
+        drawRhythmFrame(audioContext ? audioContext.currentTime : 0, true);
+      }
+
+      function rhythmGameLoop() {
+        if (!rhythmActive || !audioContext) return;
+        const now = audioContext.currentTime;
+        processAutoplayNotes(now);
+        drawRhythmFrame(now);
+        if (now >= rhythmSongEnd) {
+          finishRhythmGame();
+          return;
+        }
+        rhythmFrameId = requestAnimationFrame(rhythmGameLoop);
+      }
+
+      async function startRhythmGame() {
+        try {
+          if (rhythmActive) stopRhythmGame('正在重新准备 Autoplay…');
+          if (seqPlaying) stopSequence('Autoplay 已接管音频。节奏工房的格子会用于下一次播放。');
+          const ctx = getAudioContext();
+          if (ctx.state === 'suspended') await ctx.resume();
+          stopRhythmAudio(true);
+          rhythmRunBpm = Number(tempoRange.value) || 112;
+          rhythmBeat = 60 / rhythmRunBpm;
+          rhythmScrollSpeed = Number(scrollSpeedRange.value) || 1;
+          rhythmApproach = RHYTHM_BASE_APPROACH / rhythmScrollSpeed;
+          rhythmBpmTag.textContent = rhythmRunBpm + ' BPM';
+          rhythmLengthText.textContent = formatRhythmLength(rhythmRunBpm);
+          rhythmScore = 0;
+          rhythmCombo = 0;
+          rhythmMaxCombo = 0;
+          rhythmJudgements = { PERFECT: 0, GREAT: 0, GOOD: 0, MISS: 0 };
+          rhythmLastJudge.textContent = 'COUNT IN';
+          rhythmFeedback = { text: 'COUNT IN', until: ctx.currentTime + .65, lane: -1, good: true };
+          rhythmNotes = [];
+          const subBeat = rhythmBeat / 2;
+          rhythmSongStart = ctx.currentTime + rhythmApproach;
+          const musicalDuration = RHYTHM_TOTAL_SLOTS * subBeat;
+          rhythmSongEnd = rhythmSongStart + musicalDuration + .4;
+          rhythmNotes = buildRhythmChart(rhythmSongStart, subBeat);
+          const sourceCounts = countCurrentChartSources(rhythmNotes);
+          if (rhythmChartBreakdown) {
+            rhythmChartBreakdown.textContent = 'LEAD ' + sourceCounts.lead + ' + DRUM ' + sourceCounts.drums + ' = ' + sourceCounts.total + ' NOTES';
+            rhythmChartBreakdown.title = '本局谱面由 Lead 旋律与当前节奏工房鼓点共同生成。';
+          }
+          rhythmSongGain = ctx.createGain();
+          rhythmSongGain.gain.value = .78;
+          rhythmSongGain.connect(ctx.destination);
+          scheduleRhythmSong(ctx, rhythmSongStart, rhythmSongGain, rhythmNotes, rhythmBeat);
+          rhythmActive = true;
+          rhythmStartButton.disabled = true;
+          rhythmStartButton.textContent = 'Autoplay 播放中…';
+          rhythmStopButton.disabled = false;
+          scrollSpeedRange.disabled = true;
+          rhythmGameStatus.textContent = '正在以 ' + rhythmRunBpm + ' BPM、' + rhythmScrollSpeed.toFixed(2) + '× 流速自动播放。本局 ' + rhythmNotes.length + ' 个音符；鼓点改动将在下一局生成新谱面。';
+          updateRhythmHud();
+          if (rhythmFrameId !== null) cancelAnimationFrame(rhythmFrameId);
+          rhythmFrameId = requestAnimationFrame(rhythmGameLoop);
+        } catch (error) {
+          stopRhythmGame('音频无法启动：' + (error && error.message ? error.message : '当前浏览器可能不支持 Web Audio') + '。可以尝试系统浏览器打开。');
+        }
+      }
+
+      rhythmStartButton.addEventListener('click', startRhythmGame);
+      rhythmStopButton.addEventListener('click', () => stopRhythmGame());
+      scrollSpeedRange.addEventListener('input', () => {
+        rhythmScrollSpeed = Number(scrollSpeedRange.value) || 1;
+        rhythmApproach = RHYTHM_BASE_APPROACH / rhythmScrollSpeed;
+        scrollSpeedValue.textContent = rhythmScrollSpeed.toFixed(2) + '×';
+        if (!rhythmActive) drawRhythmFrame(audioContext ? audioContext.currentTime : 0, true);
+      });
+      tempoRange.addEventListener('input', () => {
+        if (rhythmActive) {
+          rhythmGameStatus.textContent = '本局继续使用 ' + rhythmRunBpm + ' BPM；新设定 ' + tempoRange.value + ' BPM 会在下一次 Autoplay 启动时应用。';
+        } else {
+          rhythmBpmTag.textContent = tempoRange.value + ' BPM';
+          rhythmLengthText.textContent = formatRhythmLength(Number(tempoRange.value) || 112);
+          refreshRhythmChartPreview();
+        }
+      });
+      window.addEventListener('resize', resizeRhythmCanvas, { passive: true });
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden && rhythmActive) stopRhythmGame('页面切到后台，Autoplay 已停止，避免音乐继续播放。');
+      });
+      refreshRhythmChartPreview();
+      resizeRhythmCanvas();
+      updateRhythmHud();
+
       document.addEventListener('visibilitychange', () => { if (document.hidden && seqPlaying) stopSequence('页面切到后台，节奏已自动暂停。'); });
 
       // 4. 阅读进度与导航跟随，长页面也能知道自己浏览到哪里。
